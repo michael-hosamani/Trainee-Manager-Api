@@ -59,11 +59,13 @@ public class TraineeService : ITraineeService
         TraineeResponse traineeResponse = new TraineeResponse
         {
             Id = Index,
-            FirstName = trainee.FirstName,
-            LastName = trainee.LastName,
-            Email = trainee.Email,
-            Status = trainee.Status,
-            TechStack = trainee.TechStack,
+            FirstName = newTrainee.FirstName,
+            LastName = newTrainee.LastName,
+            Email = newTrainee.Email,
+            Status = newTrainee.Status,
+            TechStack = newTrainee.TechStack,
+            CreatedDate = newTrainee.CreatedDate,
+            UpdatedDate = newTrainee.UpdatedDate
         };
        
         return traineeResponse;

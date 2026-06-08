@@ -8,6 +8,7 @@ Asp.net core
 run `dotnet run` in the root of the project directory
 
 ## API List
+- GET /api/health
 - GET /api/trainees
 - GET /api/trainees/{id}
 - POST /api/trainees
@@ -30,6 +31,13 @@ Sample PUT /api/trainees/1 request:
 } 
 
 ## Sample Response JSON
+Sample GET /api/health response:
+{
+  "status": "running",
+  "application": "Trainee Management App",
+  "timestamp": "2026-06-08T11:10:34.0036979+00:00"
+}
+
 Sample GET /api/trainees response: 
 [
   {
@@ -52,7 +60,9 @@ Sample POST /api/trainees response:
     "lastName": "joe",
     "email": "john.doe@training.com",
     "techStack": "HTML, CSS, JavaScript",
-    "status": "Active"
+    "status": "Active",
+    "createdDate": "2026-06-08T10:55:05.7288647+00:00",
+    "updatedDate": "2026-06-08T10:55:05.7294876+00:00"
   }
 }
 
