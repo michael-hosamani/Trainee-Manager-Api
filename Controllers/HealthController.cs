@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/[controller]")]
 public class HealthController: ControllerBase
 {
+    // GET /api/health route
     [HttpGet]
     public ActionResult Get(){
-        // this is the GET /api/health route
         return Ok(new { 
             status = "running", 
             application = "Trainee Management App", 

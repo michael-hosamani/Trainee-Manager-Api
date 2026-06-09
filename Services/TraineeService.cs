@@ -117,6 +117,7 @@ public class TraineeService : ITraineeService
         return true;
     }
 
+    // This function searches trainees based on query parameters
     public async Task<IQueryable<Trainee>> SearchTrainees(string search)
     {
         var result = _db.Trainees.Where(
