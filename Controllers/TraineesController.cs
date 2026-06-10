@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using PaginationFiltering.Models;
+using TraineeManagementApi.Helpers;
 
 [ApiController]
 [Route("api/[controller]")]

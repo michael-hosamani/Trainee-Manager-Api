@@ -1,5 +1,5 @@
 // Interface for TraineeService
-using PaginationFiltering.Models;
+using TraineeManagementApi.Helpers;
 
 public interface ITraineeService
 {

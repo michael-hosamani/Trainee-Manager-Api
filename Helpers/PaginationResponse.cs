@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace PaginationFiltering.Models
+namespace TraineeManagementApi.Helpers
 {
     public class PagedResponse<T>
     {

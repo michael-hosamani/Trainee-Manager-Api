@@ -1,7 +1,7 @@
 using System.Data.Common;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-using PaginationFiltering.Models;
+using TraineeManagementApi.Helpers;
 
 public class TraineeService : ITraineeService
 {
