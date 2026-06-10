@@ -24,13 +24,6 @@ Sample POST /api/trainees request:
   "techStack": "HTML, CSS, JavaScript", 
   "status": "Active"
 } 
-{ 
-  "firstName": "michael", 
-  "lastName": "hosamani", 
-  "email": "michael.hosamani@training.com", 
-  "techStack": "JavaScript & Typescript", 
-  "status": "Inactive"
-} 
 
 Sample PUT /api/trainees/1 request: 
 {  

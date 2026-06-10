@@ -59,17 +59,22 @@ public class AuthService: IAuthService
             signingCredentials: credentials
         );
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-        // var token = _jwtService.GenerateToken(checkUser.Username);
-        // return Ok(new {Token = token });
+
         var handler = new JwtSecurityTokenHandler();
 
-        // Read the token without validating signature
         var expiryDate = handler.ReadJwtToken(jwt).ValidTo;
-        Console.WriteLine("type of token: " + token.GetType());
-        Console.WriteLine("token: " + expiryDate);
+
+        var userWithoutPassword = new UserWithoutPassword
+        {
+            Email = user.Email,
+            Username = user.Username,
+            Role = user.Role,
+            CreatedDate = user.CreatedDate,
+            UpdatedDate = user.UpdatedDate  
+        };
         return new LoginResponse
         {
-            User = user,
+            User = userWithoutPassword,
             Token = jwt,
             ExpiresIn = expiryDate
         };
