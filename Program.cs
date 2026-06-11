@@ -10,8 +10,24 @@ using System.ComponentModel;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+   options.AddPolicy("AllowSpecificOrigin", 
+      policy =>
+      {
+         policy.WithOrigins("http://localhost:5173")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+      }
+   );
+
+
+});
 
 builder.Services.AddControllers()
    .AddJsonOptions(options =>
@@ -106,6 +122,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 app.MapControllers();
+app.UseCors("AllowSpecificOrigin");
 
 app.MapGet("/", () => "Hello World!");
 
