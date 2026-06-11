@@ -21,54 +21,54 @@ public class TraineesController: ControllerBase
     
     // GET /api/trainees
     [HttpGet]
-    public ActionResult GetAllTrainees(string? search,[FromQuery] PaginationParams paginationParams, Status? status)
+    public async Task<ActionResult> GetAllTrainees(string? search,[FromQuery] PaginationParams paginationParams, Status? status)
     {
-        Task<PagedResponse<Trainee>> traineeData = service.GetTraineeUsingPagination(paginationParams, search, status);
-        return Ok(traineeData.Result.Data);
+        PagedResponse<Trainee> traineeData = await service.GetTraineeUsingPagination(paginationParams, search, status);
+        return Ok(traineeData.Data);
     }
 
     // GET /api/trainees/{id}
     [HttpGet("{id}")]
-    public ActionResult GetTraineeById(int id)
+    public async Task<ActionResult> GetTraineeById(int id)
     {
-        Task<Trainee?> trainee = service.GetTraineeById(id);
-        if(trainee.Result == null)
+        Trainee? trainee = await service.GetTraineeById(id);
+        if(trainee == null)
         {
             return NotFound(new { message = "Trainee not found" });
         }
 
-        return Ok(trainee.Result);
+        return Ok(trainee);
     }   
 
     // POST /api/trainees
     [HttpPost]
-    public ActionResult CreateTrainee(CreateTraineeRequest trainee)
+    public async Task<ActionResult> CreateTrainee(CreateTraineeRequest trainee)
     {
-        Task<TraineeResponse> traineeResponse = service.CreateTrainee(trainee);
+        TraineeResponse traineeResponse = await service.CreateTrainee(trainee);
 
-        return Ok(traineeResponse.Result);
+        return Ok(traineeResponse);
     }
 
     // PUT /api/trainees/{id}
     [HttpPut("{id}")]
-    public ActionResult UpdateTraineeDetails(int id, UpdateTraineeRequest trainee)
+    public async Task<ActionResult> UpdateTraineeDetails(int id, UpdateTraineeRequest trainee)
     {
-        Task<Trainee?> updatedTraineeDetails = service.UpdateTraineeDetails(id, trainee);
+        Trainee? updatedTraineeDetails = await service.UpdateTraineeDetails(id, trainee);
 
         if(updatedTraineeDetails == null)
         {
             return NotFound(new { message = "Invalid Trainee Id" });
         }
 
-        return Ok(updatedTraineeDetails.Result);
+        return Ok(updatedTraineeDetails);
     }
 
     // DELETE /api/trainees/{id}
     [HttpDelete("{id}")]
-    public ActionResult DeleteTrainee(int id)
+    public async Task<ActionResult> DeleteTrainee(int id)
     {
-        Task<bool> isTraineeDeleted = service.DeleteTraineeDetails(id);
-        if (isTraineeDeleted.Result == false)
+        bool isTraineeDeleted = await service.DeleteTraineeDetails(id);
+        if (isTraineeDeleted == false)
         {
             return NotFound(new { message = "Invalid Trainee Data"});
         }
