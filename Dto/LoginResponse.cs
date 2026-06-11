@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using TraineeManagementApi.Models;
 
 namespace TraineeManagementApi.Dto;
 

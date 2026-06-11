@@ -1,3 +1,5 @@
+namespace TraineeManagementApi.Models;
+
 // Class for Trainee
 public class Trainee
 {

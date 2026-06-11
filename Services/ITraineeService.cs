@@ -1,5 +1,9 @@
 // Interface for TraineeService
+using TraineeManagementApi.Dto;
 using TraineeManagementApi.Helpers;
+using TraineeManagementApi.Models;
+
+namespace TraineeManagementApi.Services;
 
 public interface ITraineeService
 {

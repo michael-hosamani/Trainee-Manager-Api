@@ -12,6 +12,7 @@ using NSwag.Generation.Processors.Security;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TraineeManagementApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,7 +75,6 @@ builder.Services
     })
     .AddJwtBearer(options =>
     {
-        // Keep the claim names exactly as they appear in the token (no surprise remapping).
         options.MapInboundClaims = false;
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -86,7 +86,6 @@ builder.Services
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
             ClockSkew = TimeSpan.Zero,
-            // NameClaimType = JwtRegisteredClaimNames.Name,
             RoleClaimType = "role"
         };
     });

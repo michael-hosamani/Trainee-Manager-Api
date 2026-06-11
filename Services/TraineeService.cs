@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using TraineeManagementApi.Helpers;
 using Microsoft.AspNetCore.Identity;
+using TraineeManagementApi.Models;
+using TraineeManagementApi.Dto;
+
+namespace TraineeManagementApi.Services;
 
 public class TraineeService(ILogger<TraineeService> logger, AppDbContext db) : ITraineeService
 {

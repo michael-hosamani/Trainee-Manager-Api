@@ -1,3 +1,5 @@
+namespace TraineeManagementApi.Helpers;
+
 public class PaginationParams
 {
     private const int MaxPageSize = 20;

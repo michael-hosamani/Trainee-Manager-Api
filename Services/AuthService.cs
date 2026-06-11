@@ -5,6 +5,7 @@ using TraineeManagementApi.Dto;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using TraineeManagementApi.Models;
 
 namespace TraineeManagementApi.Services;
 
@@ -55,8 +56,8 @@ public class AuthService: IAuthService
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: "TraineeManagementApi",
-            audience: "TraineeManagementClient",
+            issuer: _configuration["Jwt:Issuer"],
+            audience: _configuration["Jwt:Audience"],
             claims: claims,
             expires: DateTime.UtcNow.AddHours(1),
             signingCredentials: credentials

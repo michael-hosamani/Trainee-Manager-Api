@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
+
 namespace TraineeManagementApi.Dto;
 
 [Index(nameof(Username), IsUnique = true)]

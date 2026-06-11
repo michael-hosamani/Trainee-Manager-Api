@@ -1,6 +1,7 @@
-
-
 // Trainee Response which excludes certain fields from the main Trainee Class
+using TraineeManagementApi.Models;
+
+namespace TraineeManagementApi.Dto;
 public class TraineeResponse
 {
     public int Id { get; set; }
