@@ -10,5 +10,5 @@ public interface ITraineeService
     Task<bool> DeleteTraineeDetails(int id);
 
     Task<IQueryable<Trainee>> SearchTrainees(string search);
-    Task<PagedResponse<Trainee>> GetTraineeUsingPagination(PaginationParams paginationParams);
+    Task<PagedResponse<Trainee>> GetTraineeUsingPagination(PaginationParams paginationParams, string? search, Status? status);
 }

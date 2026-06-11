@@ -18,21 +18,10 @@ public class TraineesController: ControllerBase
     
     // GET /api/trainees
     [HttpGet]
-    public ActionResult GetAllTrainees(string? search,[FromQuery] PaginationParams paginationParams)
+    public ActionResult GetAllTrainees(string? search,[FromQuery] PaginationParams paginationParams, Status? status)
     {
-        if(search == null)
-        {
-            // Task<List<Trainee>> allTrainees = service.GetAllTrainees();
-            // return Ok(allTrainees.Result);
-            Task<PagedResponse<Trainee>> traineeData = service.GetTraineeUsingPagination(paginationParams);
-            return Ok(traineeData.Result.Data);
-        }
-        var result = service.SearchTrainees(search);
-
-        return Ok(new
-        {
-            result.Result
-        });
+        Task<PagedResponse<Trainee>> traineeData = service.GetTraineeUsingPagination(paginationParams, search, status);
+        return Ok(traineeData.Result.Data);
     }
 
     // GET /api/trainees/{id}

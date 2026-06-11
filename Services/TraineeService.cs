@@ -125,21 +125,37 @@ public class TraineeService : ITraineeService
         );
         await _db.SaveChangesAsync();
 
-        // var searchResult = result
-
         return result;
     }
 
-    public async Task<PagedResponse<Trainee>> GetTraineeUsingPagination(PaginationParams paginationParams)
-    {
-        var query = _db.Trainees.AsQueryable();
-        var totalRecords = await query.CountAsync();
-        var items = await query.Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+    public async Task<PagedResponse<Trainee>> GetTraineeUsingPagination(PaginationParams paginationParams, string? search, Status? status)
+    { 
+        IQueryable<Trainee> trainees = _db.Trainees.AsQueryable();
+    
+        if(!string.IsNullOrWhiteSpace(search))
+        {
+            // search = search.ToLower();
+
+            trainees = trainees.Where(
+                t => 
+                    t.FirstName.Contains(search) ||
+                    t.LastName.Contains(search) ||
+                    t.Email.Contains(search) ||
+                    t.TechStack.Contains(search) 
+            );
+        }
+            
+        if(status.HasValue)
+        {   
+            trainees = trainees.Where(t => string.Equals(t.Status.ToString(), status.ToString()));
+        }
+
+        var totalRecords = await trainees.CountAsync();
+        var items = await trainees.Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
                                 .Take(paginationParams.PageSize)
                                 .ToListAsync();
-
         var pagedResponse = new PagedResponse<Trainee>(items, paginationParams.PageNumber, paginationParams.PageSize, totalRecords);
-
         return pagedResponse;
+
     }
 }
