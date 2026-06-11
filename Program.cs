@@ -64,6 +64,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<ITraineeService, TraineeService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IMentorService, MentorService>();
 
 builder.Services
     .AddAuthentication(options =>

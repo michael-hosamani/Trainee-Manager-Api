@@ -15,7 +15,7 @@ public class CreateTraineeRequest
     public required string LastName { get; set; }
 
     [Required(ErrorMessage = "Email is required")]
-    [EmailAddress(ErrorMessage = "Vadid email is required")]
+    [EmailAddress(ErrorMessage = "Valid email is required")]
     public required string Email { get; set; }
 
     [Required(ErrorMessage = "TechStack is required")]
