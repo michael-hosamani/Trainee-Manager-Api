@@ -19,7 +19,7 @@ public class AuthController: ControllerBase
         this.authService = authService;
     }
 
-    [HttpPost("/login")]
+    [HttpPost("login")]
     public ActionResult Login(LoginRequest loginRequest)
     {
         var res =  authService.UserLogin(loginRequest);

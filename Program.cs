@@ -1,11 +1,15 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using TraineeManagementApi.Services;
+using System.Text;
+using System.ComponentModel;
+using NSwag;
+using NSwag.Generation.Processors.Security;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +25,19 @@ builder.Services.AddOpenApiDocument(config =>
 {
    config.DocumentName = "v1";
    config.Title = "Training Management api"; 
+
+   config.AddSecurity("JWT", new OpenApiSecurityScheme
+   {
+      Type = OpenApiSecuritySchemeType.ApiKey,
+      Scheme = "bearer",
+      In = OpenApiSecurityApiKeyLocation.Header,
+      Name = "Authorization",
+      Description = "Bearer {your JWT token}" 
+   });
+
+   config.OperationProcessors.Add(
+      new AspNetCoreOperationSecurityScopeProcessor("JWT")
+   );
 });
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -33,33 +50,32 @@ var jwtSecret = builder.Configuration["Jwt:Key"];
 builder.Services.AddScoped<ITraineeService, TraineeService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-// builder.Services
-//     .AddAuthentication(options =>
-//     {
-//         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//     })
-//     .AddJwtBearer(options =>
-//     {
-//         // Keep the claim names exactly as they appear in the token (no surprise remapping).
-//         options.MapInboundClaims = false;
-//         options.TokenValidationParameters = new TokenValidationParameters
-//         {
-//             ValidateIssuer = true,
-//             ValidateAudience = true,
-//             ValidateLifetime = true,
-//             ValidateIssuerSigningKey = true,
-//             ValidIssuer = jwtSettings.Issuer,
-//             ValidAudience = jwtSettings.Audience,
-//             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
-//             ClockSkew = TimeSpan.Zero,
-//             NameClaimType = JwtRegisteredClaimNames.Name,
-//             RoleClaimType = "role"
-//         };
-//     });
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        // Keep the claim names exactly as they appear in the token (no surprise remapping).
+        options.MapInboundClaims = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+            ClockSkew = TimeSpan.Zero,
+            // NameClaimType = JwtRegisteredClaimNames.Name,
+            RoleClaimType = "role"
+        };
+    });
 
-// builder.Services.AddAuthorization();
-// builder.Services.AddScoped<JwtService>();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 

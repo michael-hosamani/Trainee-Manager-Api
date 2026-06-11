@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using TraineeManagementApi.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TraineeManagementApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class TraineesController: ControllerBase

@@ -37,12 +37,11 @@ public class TraineeService : ITraineeService
     // This funciton creates a new trainee and pushed it into the in-memory Trainee list
     public async Task<TraineeResponse> CreateTrainee(CreateTraineeRequest trainee)
     {
-        var hasher = new PasswordHasher<string>();
-        string hashedPassword = hasher.HashPassword("", trainee.LastName);
+
         Trainee newTrainee = new Trainee
         {
             FirstName = trainee.FirstName,
-            LastName = hashedPassword,
+            LastName = trainee.LastName,
             Email = trainee.Email,
             Status = trainee.Status,
             TechStack = trainee.TechStack,
