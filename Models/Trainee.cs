@@ -11,6 +11,8 @@ public class Trainee
     public required Status Status { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime UpdatedDate { get; set; }
+
+    public ICollection<TaskAssignment> TaskAssignments { get; set; } = new List<TaskAssignment>();
 }
 
 public enum Status

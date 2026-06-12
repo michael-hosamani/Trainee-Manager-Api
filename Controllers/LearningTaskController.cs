@@ -9,7 +9,7 @@ namespace TraineeManagementApi.Contollers;
 
 // [Authorize]
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/learning-tasks")]
 public class LearningTaskController: ControllerBase 
 {
     private ILearningTaskService _service;

@@ -37,7 +37,7 @@ public class MentorService: IMentorService
         return null;
     }
 
-    // This funciton creates a new Mentor and pushed it into the in-memory Mentor list
+    // This funciton creates a new Mentor
     public async Task<MentorResponse> CreateMentor(CreateMentorRequest mentor)
     {
 
@@ -104,7 +104,7 @@ public class MentorService: IMentorService
         return findMentor;
     }
 
-    // This function fetches by Id and deletes a Mentor from the in-memory list
+    // This function fetches by Id and deletes a Mentor
     public async Task<bool> DeleteMentorDetails(int id)
     {
         var Mentor = await _db.Mentors.SingleOrDefaultAsync(t => t.Id == id);

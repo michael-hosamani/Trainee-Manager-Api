@@ -10,6 +10,7 @@ public class LearningTask
     public required LearningTaskStatus Status { get; set; }
     public DateTime CreatedDate { get; set; } 
     public DateTime UpdatedDate { get; set; } 
+    public ICollection<TaskAssignment> TaskAssignments { get; set; } = new List<TaskAssignment>();
 }
 
 public enum LearningTaskStatus{

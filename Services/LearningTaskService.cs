@@ -37,7 +37,7 @@ public class LearningTaskService: ILearningTaskService
         return null;
     }
 
-    // This funciton creates a new LearningTask and pushed it into the in-memory LearningTask list
+    // This funciton creates a new LearningTask
     public async Task<LearningTaskResponse> CreateLearningTask(CreateLearningTaskRequest learningTask)
     {
 
@@ -104,7 +104,7 @@ public class LearningTaskService: ILearningTaskService
         return findLearningTask;
     }
 
-    // This function fetches by Id and deletes a LearningTask from the in-memory list
+    // This function fetches by Id and deletes a LearningTask
     public async Task<bool> DeleteLearningTaskDetails(int id)
     {
         var learningTask = await _db.LearningTasks.SingleOrDefaultAsync(t => t.Id == id);

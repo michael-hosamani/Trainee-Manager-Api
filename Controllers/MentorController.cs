@@ -10,11 +10,11 @@ namespace TraineeManagementApi.Contollers;
 // [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class MentorController: ControllerBase 
+public class MentorsController: ControllerBase 
 {
     private IMentorService _service;
 
-    public MentorController(IMentorService service)
+    public MentorsController(IMentorService service)
     {
         _service = service;
     }

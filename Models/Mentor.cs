@@ -10,6 +10,8 @@ public class Mentor
     public required MentorStatus Status { get; set; }
     public DateTime CreatedDate { get; set; } 
     public DateTime UpdatedDate { get; set; } 
+    public ICollection<TaskAssignment> TaskAssignments { get; set; } = new List<TaskAssignment>();
+    public ICollection<Review> Review { get; set; } = new List<Review>();
 }
 
 public enum MentorStatus {

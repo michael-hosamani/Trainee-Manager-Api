@@ -32,7 +32,7 @@ public class TraineeService(ILogger<TraineeService> logger, AppDbContext db) : I
         return null;
     }
 
-    // This funciton creates a new trainee and pushed it into the in-memory Trainee list
+    // This funciton creates a new trainee
     public async Task<TraineeResponse> CreateTrainee(CreateTraineeRequest trainee)
     {
 
@@ -99,7 +99,7 @@ public class TraineeService(ILogger<TraineeService> logger, AppDbContext db) : I
         return findTrainee;
     }
 
-    // This function fetches by Id and deletes a trainee from the in-memory list
+    // This function fetches by Id and deletes a trainee
     public async Task<bool> DeleteTraineeDetails(int id)
     {
         var trainee = await _db.Trainees.SingleOrDefaultAsync(t => t.Id == id);

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TraineeManagementApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260612121132_createSubmissionAndReviewModel")]
+    partial class createSubmissionAndReviewModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,21 +284,21 @@ namespace TraineeManagementApi.Migrations
 
             modelBuilder.Entity("TraineeManagementApi.Models.Review", b =>
                 {
-                    b.HasOne("TraineeManagementApi.Models.Mentor", "Mentor")
+                    b.HasOne("TraineeManagementApi.Models.Mentor", "mentor")
                         .WithMany("Review")
                         .HasForeignKey("MentorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TraineeManagementApi.Models.Submission", "Submission")
+                    b.HasOne("TraineeManagementApi.Models.Submission", "submission")
                         .WithMany("Review")
                         .HasForeignKey("SubmissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Mentor");
+                    b.Navigation("mentor");
 
-                    b.Navigation("Submission");
+                    b.Navigation("submission");
                 });
 
             modelBuilder.Entity("TraineeManagementApi.Models.Submission", b =>
