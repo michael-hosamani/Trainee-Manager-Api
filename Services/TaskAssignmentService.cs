@@ -40,6 +40,27 @@ public class TaskAssignmentService: ITaskAssignmentService
     // This funciton creates a new TaskAssignment 
     public async Task<TaskAssignmentResponse?> CreateTaskAssignment(CreateTaskAssignmentRequest taskAssignment)
     {   
+        Trainee? findTrainee = await _db.Trainees.SingleOrDefaultAsync(t => t.Id == taskAssignment.TraineeId);
+        if(findTrainee == null)
+        {
+            _logger.LogError("Trainee not found");
+            return null;
+        }
+
+        Mentor? findMentor = await _db.Mentors.SingleOrDefaultAsync(t => t.Id == taskAssignment.MentorId);
+        if(findMentor == null)
+        {
+            _logger.LogError("Mentor not found");
+            return null;
+        }
+
+        LearningTask? findLearningTask = await _db.LearningTasks.SingleOrDefaultAsync(t => t.Id == taskAssignment.LearningTaskId);
+        if(findLearningTask == null)
+        {
+            _logger.LogError("Learning task not found");
+            return null;
+        }
+
         if(taskAssignment.DueDate < taskAssignment.AssignedDate)
         {
             return null;

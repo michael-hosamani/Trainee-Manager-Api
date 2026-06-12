@@ -38,8 +38,14 @@ public class SubmissionService: ISubmissionService
     }
 
     // This funciton creates a new Submission
-    public async Task<SubmissionResponse> CreateSubmission(CreateSubmissionRequest submission)
+    public async Task<SubmissionResponse?> CreateSubmission(CreateSubmissionRequest submission)
     {
+        TaskAssignment? findTaskAssignment = await _db.TaskAssignments.SingleOrDefaultAsync(t => t.Id == submission.TaskAssignmentId);
+        if(findTaskAssignment == null)
+        {
+            _logger.LogError("Task assignment not found");
+            return null;
+        }
         Submission newSubmission = new Submission
         {
             TaskAssignmentId = submission.TaskAssignmentId,
