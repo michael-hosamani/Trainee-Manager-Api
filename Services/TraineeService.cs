@@ -87,7 +87,7 @@ public class TraineeService(ILogger<TraineeService> logger, AppDbContext db) : I
         if(trainee.TechStack != null)        
             findTrainee.TechStack = trainee.TechStack;
 
-        if(trainee.Status != null)
+        if(trainee.Status.HasValue)
             findTrainee.Status = trainee.Status.Value;
 
         findTrainee.UpdatedDate = DateTime.Now;

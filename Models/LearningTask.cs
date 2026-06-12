@@ -3,9 +3,9 @@ namespace TraineeManagementApi.Models;
 public class LearningTask
 {
     public int Id { get; set; } 
-    public required String Title { get; set; }
-    public required String Description { get; set; }
-    public required String  ExpectedTechStack { get; set; }
+    public required string Title { get; set; }
+    public required string Description { get; set; }
+    public required string  ExpectedTechStack { get; set; }
     public required DateTime DueDate { get; set; }
     public required LearningTaskStatus Status { get; set; }
     public DateTime CreatedDate { get; set; } 
