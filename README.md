@@ -144,8 +144,6 @@ Sample PUT    /api/learning-tasks/{id}  Request:
 }
 ```
 
-
-
 Sample POST   /api/task-assignments  Request: 
 ```javascript
 {
@@ -198,6 +196,23 @@ Sample GET /api/health response:
   "timestamp": "2026-06-08T11:10:34.0036979+00:00"
 }
 ```
+
+Sample POST /api/auth/login response:
+```javascript
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibWljaGFlbCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzgxNTE1NDAzLCJpc3MiOiJUcmFpbmVlTWFuYWdlbWVudEFwaSIsImF1ZCI6IlRyYWluZWVNYW5hZ2VtZW50Q2xpZW50In0.fN3A2xkRlHsMobn4elShkrS7CaS0yxe_OEt_5FH84p0",
+  "expiresIn": "2026-06-15T09:23:23Z",
+  "user": {
+    "id": 0,
+    "username": "michael",
+    "email": "michael@gmail.com",
+    "role": "Admin",
+    "createdDate": "0001-01-01T00:00:00",
+    "updatedDate": "0001-01-01T00:00:00"
+  }
+}
+```
+
 
 Sample GET /api/trainees response: 
 ```javascript

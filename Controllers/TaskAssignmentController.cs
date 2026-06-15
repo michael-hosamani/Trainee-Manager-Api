@@ -56,9 +56,9 @@ public class TaskAssignmentController: ControllerBase
 
     // PUT /api/TaskAssignments/{id}
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateTaskAssignmentDetails(int id, TaskAssignmentStatus? status)
+    public async Task<ActionResult> UpdateTaskAssignmentDetails(int id, UpdateTaskAssignmentRequest updateTaskAssignmentRequest)
     {
-        TaskAssignment? updatedTaskAssignmentDetails = await _service.UpdateTaskAssignmentDetails(id, status);
+        TaskAssignment? updatedTaskAssignmentDetails = await _service.UpdateTaskAssignmentDetails(id, updateTaskAssignmentRequest);
 
         if(updatedTaskAssignmentDetails == null)
         {

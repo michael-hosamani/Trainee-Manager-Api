@@ -29,7 +29,9 @@ public class SubmissionService: ISubmissionService
     // This function fetches a Submission based on its Id
     public async Task<Submission?> GetSubmissionById(int id)
     {
-        var result = await _db.Submissions.SingleOrDefaultAsync(t => t.Id == id);
+        var result = await _db.Submissions
+                                .Include(s => s.Reviews)
+                                .SingleOrDefaultAsync(t => t.Id == id);
         if(result == null)
         {
             _logger.LogError("Submission not found");

@@ -23,6 +23,7 @@ public class MentorService: IMentorService
     {
         return await _db.Mentors
                         .Include(m => m.TaskAssignments)
+                            .ThenInclude(t => t.Submissions)
                         .Include(m => m.Reviews)
                         .ToListAsync();
     }
@@ -30,7 +31,11 @@ public class MentorService: IMentorService
     // This function fetches a Mentor based on its Id
     public async Task<Mentor?> GetMentorById(int id)
     {
-        var result = await _db.Mentors.SingleOrDefaultAsync(t => t.Id == id);
+        var result = await _db.Mentors
+                                .Include(m => m.TaskAssignments)
+                                    .ThenInclude(t => t.Submissions)
+                                .Include(m => m.Reviews)
+                                .SingleOrDefaultAsync(t => t.Id == id);
         if(result == null)
         {
             _logger.LogError("Mentor not found");

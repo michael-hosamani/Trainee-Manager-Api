@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using TraineeManagementApi.Models;
 using TraineeManagementApi.Dto;
 using System.Net;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TraineeManagementApi.Services;
 
@@ -23,13 +24,17 @@ public class TaskAssignmentService: ITaskAssignmentService
     {
         return await _db.TaskAssignments
                             .Include(t => t.Submissions)
+                                .ThenInclude(s => s.Reviews)
                             .ToListAsync();
     }
 
     // This function fetches a TaskAssignment based on its Id
     public async Task<TaskAssignment?> GetTaskAssignmentById(int id)
     {
-        var result = await _db.TaskAssignments.SingleOrDefaultAsync(t => t.Id == id);
+        var result = await _db.TaskAssignments
+                                    .Include(t => t.Submissions)
+                                        .ThenInclude(s => s.Reviews)
+                                    .SingleOrDefaultAsync(t => t.Id == id);
         if(result == null)
         {
             _logger.LogError("TaskAssignment not found");
@@ -94,7 +99,7 @@ public class TaskAssignmentService: ITaskAssignmentService
     }
 
     // This function fetches the TaskAssignment based on its Id and updates certain fields entered through the body
-    public async Task<TaskAssignment?> UpdateTaskAssignmentDetails(int id, TaskAssignmentStatus? status)
+    public async Task<TaskAssignment?> UpdateTaskAssignmentDetails(int id, [FromBody] UpdateTaskAssignmentRequest updateTaskAssignmentRequest)
     {
         var findTaskAssignment = await _db.TaskAssignments.SingleOrDefaultAsync(t => t.Id == id);
         if(findTaskAssignment == null)
@@ -103,20 +108,8 @@ public class TaskAssignmentService: ITaskAssignmentService
             return null;
         }
 
-        // if(taskAssignment.TraineeId.HasValue)
-        //     findTaskAssignment.TraineeId = taskAssignment.TraineeId.Value;
-        
-        // if(taskAssignment.MentorId.HasValue)
-        //     findTaskAssignment.MentorId = taskAssignment.MentorId.Value;
-
-        // if(taskAssignment.LearningTaskId.HasValue)
-        //     findTaskAssignment.LearningTaskId = taskAssignment.LearningTaskId.Value;
-
-        // if(taskAssignment.AssignedDate.HasValue)
-        //     findTaskAssignment.AssignedDate = taskAssignment.AssignedDate.Value;
-
-        if(status.HasValue)
-            findTaskAssignment.Status = status.Value;
+        if(updateTaskAssignmentRequest.Status.HasValue)
+            findTaskAssignment.Status = updateTaskAssignmentRequest.Status.Value;
 
         await _db.SaveChangesAsync();
 

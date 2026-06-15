@@ -23,13 +23,19 @@ public class LearningTaskService: ILearningTaskService
     {
         return await _db.LearningTasks
                             .Include(l => l.TaskAssignments)
+                                .ThenInclude(t => t.Submissions)
+                                    .ThenInclude(s => s.Reviews)
                             .ToListAsync();
     }
 
     // This function fetches a LearningTask based on its Id
     public async Task<LearningTask?> GetLearningTaskById(int id)
     {
-        var result = await _db.LearningTasks.SingleOrDefaultAsync(t => t.Id == id);
+        var result = await _db.LearningTasks
+                                .Include(l => l.TaskAssignments)       
+                                    .ThenInclude(t => t.Submissions) 
+                                        .ThenInclude(s => s.Reviews)        
+                                .SingleOrDefaultAsync(t => t.Id == id);
         if(result == null)
         {
             _logger.LogError("LearningTask not found");
@@ -93,7 +99,7 @@ public class LearningTaskService: ILearningTaskService
         if(learningTask.DueDate.HasValue)
             findLearningTask.DueDate = learningTask.DueDate.Value;
 
-        if(learningTask.Status != null)
+        if(learningTask.Status.HasValue)
             findLearningTask.Status = learningTask.Status.Value;
 
         findLearningTask.UpdatedDate = DateTime.Now;
