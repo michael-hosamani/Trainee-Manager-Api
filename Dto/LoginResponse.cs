@@ -1,4 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using TraineeManagementApi.Models;
 
@@ -17,6 +16,8 @@ public class UserWithoutPassword
     public required string Username { get; set; }
     public required string Email { get; set; }
     public required Role Role { get; set; }
+    public required string RefreshToken { get; set; }
+    public required DateTime RefreshTokenExpiry { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime UpdatedDate { get; set; }
 }

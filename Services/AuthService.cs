@@ -22,9 +22,9 @@ public class AuthService: IAuthService
         _logger = logger;
     }
 
-    public LoginResponse? UserLogin(LoginRequest loginRequest)
+    public async Task<LoginResponse?> UserLogin(LoginRequest loginRequest)
     {
-        var user = _db.Users.Where(u => u.Username == loginRequest.Username).FirstOrDefault();
+        User? user = _db.Users.Where(u => u.Username == loginRequest.Username).FirstOrDefault();
 
         if (user == null)
         {
@@ -46,11 +46,116 @@ public class AuthService: IAuthService
             new Claim(ClaimTypes.Role, user.Role.ToString())
         };
 
-        var key = _configuration["Jwt:Key"];
-        if(key == null)
+        var accessToken = this.GenerateToken(user, AuthTokenType.AccessToken);
+        var refreshToken = this.GenerateToken(user, AuthTokenType.RefreshToken);
+
+        user.RefreshToken = refreshToken.jwt;
+        user.RefreshTokenExpiry = refreshToken.expiryDate;
+
+        _db.SaveChangesAsync(); 
+
+        UserWithoutPassword userWithoutPassword = new UserWithoutPassword
         {
+            Id = user.Id,
+            Email = user.Email,
+            Username = user.Username,
+            Role = user.Role,
+            CreatedDate = user.CreatedDate,
+            UpdatedDate = user.UpdatedDate,
+            RefreshToken = user.RefreshToken,
+            RefreshTokenExpiry = user.RefreshTokenExpiry
+        };
+
+        _logger.LogInformation("Logged In Successfully By user: {user} at {time}", user.Username, DateTime.UtcNow); 
+        
+        return new LoginResponse
+        {
+            User = userWithoutPassword,
+            Token = accessToken.jwt,
+            ExpiresIn = accessToken.expiryDate
+        };
+    }
+
+    public LoginResponse? refreshToken(RefreshTokenDto refreshTokenDto)
+    {
+        var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]));
+
+        var validationParameters = new TokenValidationParameters()
+        {
+            IssuerSigningKey = securityKey,
+            ValidIssuer = _configuration["Jwt:Issuer"],
+            ValidAudience = _configuration["Jwt:Audience"],
+            ValidateIssuerSigningKey = true,
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ClockSkew = TimeSpan.Zero
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var result = tokenHandler.ValidateToken(refreshTokenDto.RefreshToken, validationParameters, out SecurityToken validatedToken);
+        var jwtToken = (JwtSecurityToken)validatedToken;
+  
+        var userId = jwtToken.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
+
+        User? user =  _db.Users.Where(u => u.Id == int.Parse(userId)).FirstOrDefault();
+        if(user == null)
+        {
+            _logger.LogError("Refresh token is invalid");
             return null;
         }
+
+        if(refreshTokenDto.RefreshToken != user.RefreshToken)
+        {
+            _logger.LogError("Refresh token is invalid");
+            return null;
+        }
+
+        var newAccessToken = GenerateToken(user, AuthTokenType.AccessToken);
+        var newRefreshToken = GenerateToken(user, AuthTokenType.RefreshToken);
+        user.RefreshToken = newRefreshToken.jwt;
+        user.RefreshTokenExpiry = newRefreshToken.expiryDate;
+
+        UserWithoutPassword userWithoutPassword = new UserWithoutPassword
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Username = user.Username,
+            Role = user.Role,
+            CreatedDate = user.CreatedDate,
+            UpdatedDate = user.UpdatedDate,
+            RefreshToken = user.RefreshToken,
+            RefreshTokenExpiry = user.RefreshTokenExpiry
+        };
+        
+        _logger.LogInformation("Refresh token and access token generated");
+        return new LoginResponse
+        {
+            Token = newAccessToken.jwt,
+            ExpiresIn = newAccessToken.expiryDate,
+            User = userWithoutPassword
+        };
+    }
+
+    public GenerateTokenResult GenerateToken(User user, AuthTokenType tokenType){
+        Claim[] claims;
+        if(tokenType == AuthTokenType.AccessToken){
+            claims = 
+            [
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),  
+                new Claim(ClaimTypes.Name, user.Username), 
+                new Claim(ClaimTypes.Role, user.Role.ToString())
+            
+            ];
+        }
+        else{
+            claims = 
+            [
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),  
+            ];
+        }
+        
+
+        var key = _configuration["Jwt:Key"];
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -59,7 +164,7 @@ public class AuthService: IAuthService
             issuer: _configuration["Jwt:Issuer"],
             audience: _configuration["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(1),
+            expires: tokenType == AuthTokenType.AccessToken ? DateTime.UtcNow.AddMinutes(10) : DateTime.UtcNow.AddDays(7),
             signingCredentials: credentials
         );
 
@@ -69,22 +174,9 @@ public class AuthService: IAuthService
 
         var expiryDate = handler.ReadJwtToken(jwt).ValidTo;
 
-        var userWithoutPassword = new UserWithoutPassword
-        {
-            Email = user.Email,
-            Username = user.Username,
-            Role = user.Role,
-            CreatedDate = user.CreatedDate,
-            UpdatedDate = user.UpdatedDate  
-        };
-
-        _logger.LogInformation("Logged In Successfully By user: {user} at {time}", user.Username, DateTime.UtcNow); 
-        
-        return new LoginResponse
-        {
-            User = userWithoutPassword,
-            Token = jwt,
-            ExpiresIn = expiryDate
+        return new GenerateTokenResult{
+            jwt = jwt,
+            expiryDate = expiryDate
         };
     }
 }

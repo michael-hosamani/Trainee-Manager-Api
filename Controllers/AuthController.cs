@@ -20,9 +20,20 @@ public class AuthController: ControllerBase
     }
 
     [HttpPost("login")]
-    public ActionResult Login(LoginRequest loginRequest)
+    public async Task<ActionResult> Login(LoginRequest loginRequest)
     {
-        var res =  authService.UserLogin(loginRequest);
+        LoginResponse? res = await authService.UserLogin(loginRequest);
+        if(res == null)
+        {
+            return Unauthorized();
+        }
+        return Ok(res);
+    }
+
+    [HttpPost("refresh")]
+    public ActionResult Refresh(RefreshTokenDto refreshTokenDto)
+    {
+        var res =  authService.refreshToken(refreshTokenDto);
         if(res == null)
         {
             return Unauthorized();

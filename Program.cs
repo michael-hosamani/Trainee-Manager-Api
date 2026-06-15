@@ -113,6 +113,7 @@ using(var scope = app.Services.CreateAsyncScope())
          Username = "michael",
          Email = "michael@gmail.com",
          PasswordHash = "",
+         RefreshToken = "",
          Role = Role.Admin
       };
       var hasher = new PasswordHasher<User>();

@@ -4,5 +4,6 @@ namespace TraineeManagementApi.Services;
 
 public interface IAuthService
 {
-    LoginResponse? UserLogin(LoginRequest loginRequest);
+    Task<LoginResponse?> UserLogin(LoginRequest loginRequest);
+    LoginResponse? refreshToken(RefreshTokenDto refreshToken);
 }

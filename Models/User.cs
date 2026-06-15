@@ -11,6 +11,8 @@ public class User
     public required string Email { get; set; }
     public required string PasswordHash { get; set; }
     public required Role Role { get; set; }
+    public required string RefreshToken { get; set; }
+    public DateTime RefreshTokenExpiry { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime UpdatedDate { get; set; }
 }
