@@ -7,7 +7,7 @@ using TraineeManagementApi.Dto;
 
 namespace TraineeManagementApi.Contollers;
 
-[Authorize]
+// [Authorize]
 [ApiController]
 [Route("api/learning-tasks")]
 public class LearningTaskController: ControllerBase 
@@ -22,10 +22,9 @@ public class LearningTaskController: ControllerBase
     // GET /api/LearningTasks
     [HttpGet]
     public async Task<ActionResult> GetAllLearningTasks()
-    {
-        throw new Exception("some error"); 
-        // var learningTaskData = await _service.GetAllLearningTasks();
-        // return Ok(learningTaskData);
+    { 
+        var learningTaskData = await _service.GetAllLearningTasks();
+        return Ok(learningTaskData);
     }
 
     // GET /api/LearningTasks/{id}

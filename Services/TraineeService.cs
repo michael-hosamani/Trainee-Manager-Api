@@ -23,13 +23,13 @@ public class TraineeService(ILogger<TraineeService> logger, AppDbContext db) : I
     public async Task<Trainee?> GetTraineeById(int id)
     {
         var result = await _db.Trainees.SingleOrDefaultAsync(t => t.Id == id);
-        if(result != null)
+        if(result == null)
         {
             _logger.LogError("Trainee not found");
-            return result;
+            return null;
         }
 
-        return null;
+        return result;
     }
 
     // This funciton creates a new trainee
@@ -157,6 +157,7 @@ public class TraineeService(ILogger<TraineeService> logger, AppDbContext db) : I
         var totalRecords = await trainees.CountAsync();
         var items = await trainees.Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
                                 .Take(paginationParams.PageSize)
+                                .Include(t => t.TaskAssignments)
                                 .ToListAsync();
         var pagedResponse = new PagedResponse<Trainee>(items, paginationParams.PageNumber, paginationParams.PageSize, totalRecords);
         return pagedResponse;

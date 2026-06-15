@@ -21,20 +21,21 @@ public class TaskAssignmentService: ITaskAssignmentService
     // This function returns the list of all the TaskAssignments
     public async Task<List<TaskAssignment>> GetAllTaskAssignments()
     {
-        return await _db.TaskAssignments.ToListAsync();
+        return await _db.TaskAssignments
+                            .Include(t => t.Submissions)
+                            .ToListAsync();
     }
 
     // This function fetches a TaskAssignment based on its Id
     public async Task<TaskAssignment?> GetTaskAssignmentById(int id)
     {
         var result = await _db.TaskAssignments.SingleOrDefaultAsync(t => t.Id == id);
-        if(result != null)
+        if(result == null)
         {
             _logger.LogError("TaskAssignment not found");
-            return result;
+            return null;
         }
-
-        return null;
+        return result;
     }
 
     // This funciton creates a new TaskAssignment 

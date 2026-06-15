@@ -2,18 +2,82 @@
 Trainee Management API
 
 ## Technology Used
-Asp.net core
+Asp.net core and MySql
 
-## How to Run
-run `dotnet run` in the root of the project directory
+## Backend setup stpes
+1. Navigate to the project folder
+  `cd path/to/your/project`
+
+2. Restore dependencies
+  `dotnet restore` 
+
+3. Build the project 
+  `dotnet build`
+
+4. Run database migrations
+  `dotnet ef database update`
+
+5. Run the applicaiotn
+  `dotnet run`
+
+## MySQL setup steps
+- First import required packages and make sure all the packages are of the same version so that we do not get any version mismatch error.
+- Update the Program.cs file for using the MySql database instead of In-memory datase.
+- In appsettings.json add another entry for Connection string like this:
+  "ConnectionStrings": {
+    "DefaultConnection": "server=localhost;port=3306;database=trainee_management_db;user=root;password=root;"
+  },
+- Run dotnet build to make sure there are no errors.
+- Run the migration command => dotnet ef migrations add InitialCreate
+- Once the migration is completed run this command to make tables in the database => dotnet ef database update
+- Once ran successfully, the code and the database are in sync. We can test the connection by using swagger UI, try adding one entry using POST end point and see if it is shown in the datase or not.
+
+## Login credentials for testing
+``` javascript
+{
+  "username": "michael",
+  "password": "pass"
+}
+```
+
+## JWT usage instructions
+- In appsetting.json and appsetting.Development.json enter appropriate key, issuer, audience, and expiry
 
 ## API List
 - GET /api/health
-- GET /api/trainees
-- GET /api/trainees/{id}
-- POST /api/trainees
-- PUT /api/trainees/{id}
-- DELETE /api/trainees/{id}
+
+- POST   /api/auth/login 
+
+- GET     /api/trainees
+- GET     /api/trainees/{id}
+- POST    /api/trainees
+- PUT     /api/trainees/{id}
+- DELETE  /api/trainees/{id}
+
+- GET    /api/mentors 
+- GET    /api/mentors/{id} 
+- POST   /api/mentors 
+- PUT    /api/mentors/{id} 
+- DELETE /api/mentors/{id} 
+
+- GET    /api/learning-tasks 
+- GET    /api/learning-tasks/{id} 
+- POST   /api/learning-tasks 
+- PUT    /api/learning-tasks/{id} 
+- DELETE /api/learning-tasks/{id} 
+
+- POST   /api/task-assignments 
+- GET    /api/task-assignments 
+- GET    /api/task-assignments/{id} 
+- PUT    /api/task-assignments/{id}/status 
+
+- POST   /api/submissions 
+- GET    /api/submissions 
+- GET    /api/submissions/{id} 
+
+- POST   /api/reviews 
+- GET    /api/reviews 
+- GET    /api/reviews/{id}
 
 ## Sample Request JSON 
 
@@ -28,11 +92,101 @@ Sample POST /api/trainees request:
 } 
 ```
 
-Sample PUT /api/trainees/1 request: 
+Sample PUT /api/trainees/{id} request: 
 ```javascript
 {  
   "status": "InActive"
 } 
+```
+
+Sample POST   /api/mentors  Request: 
+```javascript
+{
+  "firstName": "mentor name",
+  "lastName": "mentor lastname",
+  "email": "mentor@example.com",
+  "expertise": "string",
+  "status": "Active"
+}
+```
+
+Sample PUT    /api/mentors/{id}  Request: 
+```javascript
+{
+  "firstName": "string",
+  "lastName": "string",
+  "email": "user@example.com",
+  "expertise": "string",
+  "status": "Active" 
+}
+```
+
+
+Sample POST   /api/learning-tasks  Request: 
+```javascript
+{
+  "title": "string",
+  "description": "string",
+  "expectedTechStack": "string",
+  "dueDate": "2026-06-15T06:23:00.184Z",
+  "status": "Draft"
+}
+```
+
+Sample PUT    /api/learning-tasks/{id}  Request: 
+```javascript
+{
+  "title": "string",
+  "description": "string",
+  "expectedTechStack": "string",
+  "dueDate": "2026-06-15T06:23:00.184Z",
+  "status": "Draft"
+}
+```
+
+
+
+Sample POST   /api/task-assignments  Request: 
+```javascript
+{
+  "traineeId": 0,
+  "mentorId": 0,
+  "learningTaskId": 0,
+  "assignedDate": "2026-06-15T06:23:33.674Z",
+  "dueDate": "2026-06-15T06:23:33.674Z",
+  "status": "Assigned",
+  "remarks": "string"
+}
+```
+
+Sample PUT    /api/task-assignments/{id}/status  Request: 
+```javascript
+{
+  "status": "Assigned",
+}
+```
+
+Sample POST   /api/submissions  Request: 
+```javascript
+{
+  "taskAssignmentId": 0,
+  "submissionUrl": "string",
+  "notes": "string",
+  "submissionDate": "2026-06-15T06:24:12.398Z",
+  "status": "Submitted"
+}
+```
+
+Sample POST   /api/reviews  Request: 
+```javascript
+{
+  "submissionId": 0,
+  "mentorId": 0,
+  "feedback": "string",
+  "score": "string",
+  "status": "Accepted",
+  "reviewedDate": "2026-06-15T06:24:27.235Z"
+}
 ```
 
 ## Sample Response JSON
@@ -105,19 +259,477 @@ Sample PUT /api/trainees/{id} response:
 }
 ```
 
-## Known Limitations 
-- Absense of Authentication
-- Still using In-memory database instead of Sql or NoSql database
-
-## Database Setup Steps
- 
-- First import required packages and make sure all the packages are of the same version so that we do not get any version mismatch error.
-- Update the Program.cs file for using the MySql database instead of In-memory datase.
-- In appsettings.json add another entry for Connection string like this:
-  "ConnectionStrings": {
-    "DefaultConnection": "server=localhost;port=3306;database=trainee_management_db;user=root;password=root;"
+Sample GET    /api/mentors  Response: 
+```javascript
+[
+  {
+    "id": 1,
+    "firstName": "mentor",
+    "lastName": "string",
+    "email": "mentor@gmail.com",
+    "expertise": "Web development",
+    "status": "Active",
+    "createdDate": "2026-06-11T13:04:19.796316",
+    "updatedDate": "2026-06-11T13:16:48.646818",
+    "taskAssignments": [
+      {
+        "id": 1,
+        "traineeId": 4,
+        "mentorId": 1,
+        "learningTaskId": 1,
+        "assignedDate": "2026-06-12T10:16:43.026",
+        "dueDate": "2026-06-12T10:16:43.026",
+        "status": "Assigned",
+        "remarks": null,
+        "submissions": []
+      },
+      {
+        "id": 2,
+        "traineeId": 5,
+        "mentorId": 1,
+        "learningTaskId": 1,
+        "assignedDate": "2026-06-12T10:16:43.026",
+        "dueDate": "2026-07-12T10:16:43.026",
+        "status": "InProgress",
+        "remarks": null,
+        "submissions": []
+      },
+      {
+        "id": 3,
+        "traineeId": 5,
+        "mentorId": 1,
+        "learningTaskId": 1,
+        "assignedDate": "2026-06-12T10:16:43.026",
+        "dueDate": "2026-05-12T10:16:43.026",
+        "status": "Assigned",
+        "remarks": null,
+        "submissions": []
+      }
+    ],
+    "reviews": [
+      {
+        "id": 1,
+        "submissionId": 1,
+        "mentorId": 1,
+        "feedback": "everything is fine",
+        "score": "9/10",
+        "status": "Accepted",
+        "reviewedDate": "2026-06-12T12:42:15.378"
+      }
+    ]
   },
-- Run dotnet build to make sure there are no errors.
-- Run the migration command => dotnet ef migrations add InitialCreate
-- Once the migration is completed run this command to make tables in the database => dotnet ef database update
-- Once ran successfully, the code and the database are in sync. We can test the connection by using swagger UI, try adding one entry using POST end point and see if it is shown in the datase or not.
+  {
+    "id": 2,
+    "firstName": "string",
+    "lastName": "string",
+    "email": "mentor2@example.com",
+    "expertise": "string",
+    "status": "Active",
+    "createdDate": "2026-06-11T13:17:16.029161",
+    "updatedDate": "2026-06-12T08:07:57.476317",
+    "taskAssignments": [
+      {
+        "id": 4,
+        "traineeId": 6,
+        "mentorId": 2,
+        "learningTaskId": 2,
+        "assignedDate": "2026-06-12T10:38:31.091",
+        "dueDate": "2026-07-12T10:38:31.091",
+        "status": "Assigned",
+        "remarks": null,
+        "submissions": []
+      }
+    ],
+    "reviews": []
+  }
+]
+```
+
+Sample GET    /api/mentors/{id}  Response: 
+```javascript
+{
+  "id": 1,
+  "firstName": "mentor",
+  "lastName": "string",
+  "email": "mentor@gmail.com",
+  "expertise": "Web development",
+  "status": "Active",
+  "createdDate": "2026-06-11T13:04:19.796316",
+  "updatedDate": "2026-06-11T13:16:48.646818",
+  "taskAssignments": [],
+  "reviews": []
+}
+```
+
+Sample POST   /api/mentors  Response: 
+```javascript
+{
+  "id": 4,
+  "firstName": "mentor name",
+  "lastName": "mentor lastname",
+  "email": "mentor@example.com",
+  "expertise": "string",
+  "status": "Active",
+  "createdDate": "2026-06-15T06:25:46.4344634+00:00",
+  "updatedDate": "2026-06-15T06:25:46.4344807+00:00"
+}
+```
+
+Sample PUT    /api/mentors/{id}  Response: 
+```javascript
+{
+  "id": 4,
+  "firstName": "mentor name",
+  "lastName": "mentor lastnaem",
+  "email": "mentor.name@example.com",
+  "expertise": "Asp.net core",
+  "status": "Active",
+  "createdDate": "2026-06-15T06:25:46.434463",
+  "updatedDate": "2026-06-15T06:27:15.1490412+00:00",
+  "taskAssignments": [],
+  "reviews": []
+}
+```
+
+
+Sample GET    /api/learning-tasks  Response: 
+```javascript
+[
+  {
+    "id": 1,
+    "title": "string",
+    "description": "string",
+    "expectedTechStack": "string",
+    "dueDate": "2026-06-12T07:23:42.199",
+    "status": "Closed",
+    "createdDate": "2026-06-12T06:11:03.554699",
+    "updatedDate": "2026-06-12T08:10:51.633823",
+    "taskAssignments": [
+      {
+        "id": 3,
+        "traineeId": 5,
+        "mentorId": 1,
+        "learningTaskId": 1,
+        "assignedDate": "2026-06-12T10:16:43.026",
+        "dueDate": "2026-05-12T10:16:43.026",
+        "status": "Assigned",
+        "remarks": null,
+        "submissions": []
+      },
+      {
+        "id": 2,
+        "traineeId": 5,
+        "mentorId": 1,
+        "learningTaskId": 1,
+        "assignedDate": "2026-06-12T10:16:43.026",
+        "dueDate": "2026-07-12T10:16:43.026",
+        "status": "InProgress",
+        "remarks": null,
+        "submissions": []
+      },
+      {
+        "id": 1,
+        "traineeId": 4,
+        "mentorId": 1,
+        "learningTaskId": 1,
+        "assignedDate": "2026-06-12T10:16:43.026",
+        "dueDate": "2026-06-12T10:16:43.026",
+        "status": "Assigned",
+        "remarks": null,
+        "submissions": []
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "intermediate",
+    "description": "learn intermediate stuff",
+    "expectedTechStack": "dotnet",
+    "dueDate": "2026-06-12T06:10:41.504",
+    "status": "Draft",
+    "createdDate": "2026-06-12T06:11:23.192005",
+    "updatedDate": "2026-06-12T06:11:23.192006",
+    "taskAssignments": [
+      {
+        "id": 4,
+        "traineeId": 6,
+        "mentorId": 2,
+        "learningTaskId": 2,
+        "assignedDate": "2026-06-12T10:38:31.091",
+        "dueDate": "2026-07-12T10:38:31.091",
+        "status": "Assigned",
+        "remarks": null,
+        "submissions": []
+      }
+    ]
+  }
+]
+```
+
+Sample GET    /api/learning-tasks/{id}  Response: 
+```javascript
+{
+  "id": 1,
+  "title": "string",
+  "description": "string",
+  "expectedTechStack": "string",
+  "dueDate": "2026-06-12T07:23:42.199",
+  "status": "Closed",
+  "createdDate": "2026-06-12T06:11:03.554699",
+  "updatedDate": "2026-06-12T08:10:51.633823",
+  "taskAssignments": []
+}
+```
+
+Sample POST   /api/learning-tasks  Response: 
+```javascript
+{
+  "id": 4,
+  "title": "string",
+  "description": "string",
+  "expectedTechStack": "string",
+  "dueDate": "2026-06-15T06:23:00.184Z",
+  "status": "Draft",
+  "createdDate": "2026-06-15T06:28:36.1590737+00:00",
+  "updatedDate": "2026-06-15T06:28:36.1590886+00:00"
+}
+```
+
+Sample PUT    /api/learning-tasks/{id}  Response: 
+```javascript
+{
+  "id": 4,
+  "title": "auth",
+  "description": "implement auth",
+  "expectedTechStack": "asp.net",
+  "dueDate": "2026-06-20T06:28:55.685Z",
+  "status": "Draft",
+  "createdDate": "2026-06-15T06:28:36.159073",
+  "updatedDate": "2026-06-15T06:29:54.7039602+00:00",
+  "taskAssignments": []
+}
+```
+
+Sample GET    /api/task-assignments  Response: 
+```javascript
+[
+  {
+    "id": 1,
+    "traineeId": 4,
+    "mentorId": 1,
+    "learningTaskId": 1,
+    "assignedDate": "2026-06-12T10:16:43.026",
+    "dueDate": "2026-06-12T10:16:43.026",
+    "status": "Assigned",
+    "remarks": null,
+    "submissions": [
+      {
+        "id": 1,
+        "taskAssignmentId": 1,
+        "submissionUrl": "github.com",
+        "notes": "none",
+        "submissionDate": "2026-06-12T12:14:19.144",
+        "status": "Submitted",
+        "reviews": []
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "traineeId": 5,
+    "mentorId": 1,
+    "learningTaskId": 1,
+    "assignedDate": "2026-06-12T10:16:43.026",
+    "dueDate": "2026-07-12T10:16:43.026",
+    "status": "InProgress",
+    "remarks": null,
+    "submissions": [
+      {
+        "id": 2,
+        "taskAssignmentId": 2,
+        "submissionUrl": "gitlab.com",
+        "notes": "none",
+        "submissionDate": "2026-03-12T12:14:19.144",
+        "status": "Resubmitted",
+        "reviews": []
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "traineeId": 5,
+    "mentorId": 1,
+    "learningTaskId": 1,
+    "assignedDate": "2026-06-12T10:16:43.026",
+    "dueDate": "2026-05-12T10:16:43.026",
+    "status": "Assigned",
+    "remarks": null,
+    "submissions": []
+  },
+  {
+    "id": 4,
+    "traineeId": 6,
+    "mentorId": 2,
+    "learningTaskId": 2,
+    "assignedDate": "2026-06-12T10:38:31.091",
+    "dueDate": "2026-07-12T10:38:31.091",
+    "status": "Assigned",
+    "remarks": null,
+    "submissions": []
+  }
+]
+```
+
+Sample GET    /api/task-assignments/{id}  Response: 
+```javascript
+{
+  "id": 1,
+  "traineeId": 4,
+  "mentorId": 1,
+  "learningTaskId": 1,
+  "assignedDate": "2026-06-12T10:16:43.026",
+  "dueDate": "2026-06-12T10:16:43.026",
+  "status": "Assigned",
+  "remarks": null,
+  "submissions": []
+}
+```
+
+Sample POST   /api/task-assignments  Response: 
+```javascript
+{
+  "traineeId": 5,
+  "mentorId": 1,
+  "learningTaskId": 1,
+  "assignedDate": "2026-06-15T06:23:33.674Z",
+  "dueDate": "2026-06-15T06:23:33.674Z",
+  "status": "Assigned",
+  "remarks": null
+}
+```
+
+Sample PUT    /api/task-assignments/{id}/status  Response: 
+```javascript
+{
+  "id": 1,
+  "traineeId": 4,
+  "mentorId": 1,
+  "learningTaskId": 1,
+  "assignedDate": "2026-06-12T10:16:43.026",
+  "dueDate": "2026-06-12T10:16:43.026",
+  "status": "Reviewed",
+  "remarks": null,
+  "submissions": []
+}
+```
+
+Sample GET    /api/submissions  Response: 
+```javascript
+[
+  {
+    "id": 1,
+    "taskAssignmentId": 1,
+    "submissionUrl": "github.com",
+    "notes": "none",
+    "submissionDate": "2026-06-12T12:14:19.144",
+    "status": "Submitted",
+    "reviews": [
+      {
+        "id": 1,
+        "submissionId": 1,
+        "mentorId": 1,
+        "feedback": "everything is fine",
+        "score": "9/10",
+        "status": "Accepted",
+        "reviewedDate": "2026-06-12T12:42:15.378"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "taskAssignmentId": 2,
+    "submissionUrl": "gitlab.com",
+    "notes": "none",
+    "submissionDate": "2026-03-12T12:14:19.144",
+    "status": "Resubmitted",
+    "reviews": []
+  }
+]
+```
+
+Sample GET    /api/submissions/{id}  Response: 
+```javascript
+{
+  "id": 2,
+  "taskAssignmentId": 2,
+  "submissionUrl": "gitlab.com",
+  "notes": "none",
+  "submissionDate": "2026-03-12T12:14:19.144",
+  "status": "Resubmitted",
+  "reviews": []
+}
+```
+
+Sample POST   /api/submissions  Response: 
+```javascript
+{
+  "id": 3,
+  "taskAssignmentId": 1,
+  "submissionUrl": "string",
+  "notes": "string",
+  "submissionDate": "2026-06-15T06:24:12.398Z",
+  "status": "Submitted",
+  "taskAssignment": null
+}
+```
+
+Sample GET    /api/reviews  Response: 
+```javascript
+[
+  {
+    "id": 1,
+    "submissionId": 1,
+    "mentorId": 1,
+    "feedback": "everything is fine",
+    "score": "9/10",
+    "status": "Accepted",
+    "reviewedDate": "2026-06-12T12:42:15.378"
+  }
+]
+```
+
+Sample GET    /api/reviews/{id} Response: 
+```javascript
+{
+  "id": 1,
+  "submissionId": 1,
+  "mentorId": 1,
+  "feedback": "everything is fine",
+  "score": "9/10",
+  "status": "Accepted",
+  "reviewedDate": "2026-06-12T12:42:15.378"
+}
+```
+
+Sample POST   /api/reviews  Response: 
+```javascript
+{
+  "id": 2,
+  "submissionId": 2,
+  "mentorId": 2,
+  "feedback": "string",
+  "score": "string",
+  "status": "Accepted",
+  "reviewedDate": "2026-06-15T06:49:17.725Z",
+  "submission": null,
+  "mentor": null
+}
+```
+
+## Known Limitations 
+- Scalability
+
+## Security checklist
+
+## Next improvement areas.
+- Improve scalability

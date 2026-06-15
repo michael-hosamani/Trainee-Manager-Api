@@ -28,13 +28,12 @@ public class ReviewService: IReviewService
     public async Task<Review?> GetReviewById(int id)
     {
         var result = await _db.Reviews.SingleOrDefaultAsync(t => t.Id == id);
-        if(result != null)
+        if(result == null)
         {
             _logger.LogError("Review not found");
-            return result;
+            return null;
         }
-
-        return null;
+        return result;
     }
 
     // This funciton creates a new Review

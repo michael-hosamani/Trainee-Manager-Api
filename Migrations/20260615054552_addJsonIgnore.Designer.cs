@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TraineeManagementApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260615054552_addJsonIgnore")]
+    partial class addJsonIgnore
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -282,13 +285,13 @@ namespace TraineeManagementApi.Migrations
             modelBuilder.Entity("TraineeManagementApi.Models.Review", b =>
                 {
                     b.HasOne("TraineeManagementApi.Models.Mentor", "Mentor")
-                        .WithMany("Reviews")
+                        .WithMany("Review")
                         .HasForeignKey("MentorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TraineeManagementApi.Models.Submission", "Submission")
-                        .WithMany("Reviews")
+                        .WithMany("Review")
                         .HasForeignKey("SubmissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -343,14 +346,14 @@ namespace TraineeManagementApi.Migrations
 
             modelBuilder.Entity("TraineeManagementApi.Models.Mentor", b =>
                 {
-                    b.Navigation("Reviews");
+                    b.Navigation("Review");
 
                     b.Navigation("TaskAssignments");
                 });
 
             modelBuilder.Entity("TraineeManagementApi.Models.Submission", b =>
                 {
-                    b.Navigation("Reviews");
+                    b.Navigation("Review");
                 });
 
             modelBuilder.Entity("TraineeManagementApi.Models.TaskAssignment", b =>

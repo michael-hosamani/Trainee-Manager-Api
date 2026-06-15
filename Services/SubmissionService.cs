@@ -21,20 +21,21 @@ public class SubmissionService: ISubmissionService
     // This function returns the list of all the Submissions
     public async Task<List<Submission>> GetAllSubmissions()
     {
-        return await _db.Submissions.ToListAsync();
+        return await _db.Submissions
+                            .Include(s => s.Reviews)
+                            .ToListAsync();
     }
 
     // This function fetches a Submission based on its Id
     public async Task<Submission?> GetSubmissionById(int id)
     {
         var result = await _db.Submissions.SingleOrDefaultAsync(t => t.Id == id);
-        if(result != null)
+        if(result == null)
         {
             _logger.LogError("Submission not found");
-            return result;
+            return null;
         }
-
-        return null;
+        return result;
     }
 
     // This funciton creates a new Submission

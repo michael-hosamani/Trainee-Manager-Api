@@ -21,20 +21,23 @@ public class MentorService: IMentorService
     // This function returns the list of all the Mentors
     public async Task<List<Mentor>> GetAllMentors()
     {
-        return await _db.Mentors.ToListAsync();
+        return await _db.Mentors
+                        .Include(m => m.TaskAssignments)
+                        .Include(m => m.Reviews)
+                        .ToListAsync();
     }
 
     // This function fetches a Mentor based on its Id
     public async Task<Mentor?> GetMentorById(int id)
     {
         var result = await _db.Mentors.SingleOrDefaultAsync(t => t.Id == id);
-        if(result != null)
+        if(result == null)
         {
             _logger.LogError("Mentor not found");
-            return result;
+            return null;
         }
 
-        return null;
+        return result;
     }
 
     // This funciton creates a new Mentor

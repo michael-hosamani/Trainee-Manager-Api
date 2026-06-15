@@ -11,7 +11,7 @@ public class Mentor
     public DateTime CreatedDate { get; set; } 
     public DateTime UpdatedDate { get; set; } 
     public ICollection<TaskAssignment> TaskAssignments { get; set; } = new List<TaskAssignment>();
-    public ICollection<Review> Review { get; set; } = new List<Review>();
+    public ICollection<Review> Reviews { get; set; } = new List<Review>();
 }
 
 public enum MentorStatus {

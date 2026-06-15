@@ -1,4 +1,6 @@
 
+using System.Text.Json.Serialization;
+
 namespace TraineeManagementApi.Models;
 
 public class Submission
@@ -9,8 +11,10 @@ public class Submission
     public required string Notes { get; set; }
     public DateTime SubmissionDate { get; set; }
     public required SubmissionStatus Status { get; set; }
+
+    [JsonIgnore]
     public TaskAssignment TaskAssignment { get; set; } = null!;
-    public ICollection<Review> Review { get; set; } = new List<Review>();
+    public ICollection<Review> Reviews { get; set; } = new List<Review>();
 }
 
 public enum SubmissionStatus

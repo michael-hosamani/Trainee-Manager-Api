@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace TraineeManagementApi.Models;
 
@@ -14,9 +15,14 @@ public class TaskAssignment
     public required DateTime DueDate { get; set; }
     public required TaskAssignmentStatus Status { get; set; }
     public string? Remarks { get; set; }
-
+    
+    [JsonIgnore]
     public Trainee Trainee { get; set; } = null!;
+    
+    [JsonIgnore]
     public Mentor Mentor { get; set; } = null!;
+    
+    [JsonIgnore]
     public LearningTask LearningTask { get; set; } = null!;
     public ICollection<Submission> Submissions { get; set; } = new List<Submission>();
 }

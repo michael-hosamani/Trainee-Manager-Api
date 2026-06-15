@@ -21,20 +21,21 @@ public class LearningTaskService: ILearningTaskService
     // This function returns the list of all the LearningTasks
     public async Task<List<LearningTask>> GetAllLearningTasks()
     {
-        return await _db.LearningTasks.ToListAsync();
+        return await _db.LearningTasks
+                            .Include(l => l.TaskAssignments)
+                            .ToListAsync();
     }
 
     // This function fetches a LearningTask based on its Id
     public async Task<LearningTask?> GetLearningTaskById(int id)
     {
         var result = await _db.LearningTasks.SingleOrDefaultAsync(t => t.Id == id);
-        if(result != null)
+        if(result == null)
         {
             _logger.LogError("LearningTask not found");
-            return result;
+            return null;
         }
-
-        return null;
+        return result;
     }
 
     // This funciton creates a new LearningTask

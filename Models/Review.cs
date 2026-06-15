@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace TraineeManagementApi.Models;
 
 public class Review
@@ -9,7 +11,11 @@ public class Review
     public string? Score { get; set; }
     public required ReviewStatus Status { get; set; }
     public required DateTime ReviewedDate { get; set; }
+
+    [JsonIgnore]
     public Submission Submission { get; set; } = null!;
+    
+    [JsonIgnore]
     public Mentor Mentor { get; set; } = null!;
 }
 
