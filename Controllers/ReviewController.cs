@@ -19,7 +19,12 @@ public class ReviewsController: ControllerBase
         _service = service;
     }
 
-    // GET /api/Reviews
+    // GET /api/reviews
+    /// <summary>
+    /// Retrieves all the Reviews.
+    /// </summary>
+    /// <returns>All the Reviews.</returns>
+    /// <response code="200">Returns all the Reviews.</response>
     [HttpGet]
     public async Task<ActionResult> GetAllReviews()
     {
@@ -27,7 +32,14 @@ public class ReviewsController: ControllerBase
         return Ok(reviewData);
     }
 
-    // GET /api/Reviews/{id}
+    // GET /api/reviews/{id}
+    /// <summary>
+    /// Retrieves a specific Review by ID.
+    /// </summary>
+    /// <param name="id">The ID of the Review to retrieve.</param>
+    /// <returns>The requested Review.</returns>
+    /// <response code="200">Returns the requested Review.</response>
+    /// <response code="404">If the Review is not found.</response>
     [HttpGet("{id}")]
     public async Task<ActionResult> GetReviewById(int id)
     {
@@ -40,7 +52,13 @@ public class ReviewsController: ControllerBase
         return Ok(review);
     }   
 
-    // POST /api/Reviews
+    // POST /api/reviews
+    /// <summary>
+    /// Creates a new Review.
+    /// </summary>
+    /// <param name="review">Review details required for creation</param>
+    /// <returns>The newly created Review.</returns>
+    /// <response code="200">Returns the newly created Review.</response>
     [HttpPost]
     public async Task<ActionResult> CreateReview(CreateReviewRequest review)
     {

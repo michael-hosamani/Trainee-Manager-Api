@@ -20,34 +20,11 @@ public class TraineesController: ControllerBase
     }
     
     // GET /api/trainees
-    /*
-        This route fetchs and return all the Trainees
-        Returns the following response:
-        [
-            {
-                "id": 7,
-                "firstName": "john",
-                "lastName": "doe",
-                "email": "john.doe@example.com",
-                "techStack": "string",
-                "status": "Inactive",
-                "createdDate": "2026-06-11T09:47:43.250425",
-                "updatedDate": "2026-06-11T09:47:43.250453",
-                "taskAssignments": []
-            },
-            {
-                "id": 8,
-                "firstName": "user",
-                "lastName": "dummy",
-                "email": "user@example.com",
-                "techStack": "string",
-                "status": "Active",
-                "createdDate": "2026-06-11T10:49:07.88049",
-                "updatedDate": "2026-06-11T10:49:07.880508",
-                "taskAssignments": []
-            }
-        ]
-    */
+    /// <summary>
+    /// Retrieves all the Trainees.
+    /// </summary>
+    /// <returns>All the Trainees.</returns>
+    /// <response code="200">Returns all the trainees.</response>
     [HttpGet]
     public async Task<ActionResult> GetAllTrainees(string? search,[FromQuery] PaginationParams paginationParams, Status? status)
     {
@@ -56,6 +33,13 @@ public class TraineesController: ControllerBase
     }
 
     // GET /api/trainees/{id}
+    /// <summary>
+    /// Retrieves a specific Trainee by ID.
+    /// </summary>
+    /// <param name="id">The ID of the Trainee to retrieve.</param>
+    /// <returns>The requested Trainee.</returns>
+    /// <response code="200">Returns the requested Trainee.</response>
+    /// <response code="404">If the Trainee is not found.</response>
     [HttpGet("{id}")]
     public async Task<ActionResult> GetTraineeById(int id)
     {
@@ -69,6 +53,12 @@ public class TraineesController: ControllerBase
     }   
 
     // POST /api/trainees
+    /// <summary>
+    /// Creates a new Trainee.
+    /// </summary>
+    /// <param name="trainee">Trainee details required for creation</param>
+    /// <returns>The newly created Trainee.</returns>
+    /// <response code="200">Returns the newly created Trainee.</response>
     [HttpPost]
     public async Task<ActionResult> CreateTrainee(CreateTraineeRequest trainee)
     {
@@ -78,6 +68,13 @@ public class TraineesController: ControllerBase
     }
 
     // PUT /api/trainees/{id}
+    /// <summary>
+    /// Update a specific Trainee by ID.
+    /// </summary>
+    /// <param name="id">The ID of the Trainee to retrieve.</param>
+    /// <returns>The updated Trainee.</returns>
+    /// <response code="200">Returns the updated Trainee.</response>
+    /// <response code="404">If the Trainee is not found.</response>
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateTraineeDetails(int id, UpdateTraineeRequest trainee)
     {
@@ -92,6 +89,13 @@ public class TraineesController: ControllerBase
     }
 
     // DELETE /api/trainees/{id}
+    /// <summary>
+    /// Delete a specific Trainee by ID.
+    /// </summary>
+    /// <param name="id">The ID of the Trainee to retrieve.</param>
+    /// <returns>The deleted Trainee.</returns>
+    /// <response code="200">Returns the deleted Trainee.</response>
+    /// <response code="404">If the Trainee is not found.</response>
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteTrainee(int id)
     {

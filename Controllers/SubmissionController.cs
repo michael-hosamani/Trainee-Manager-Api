@@ -19,7 +19,12 @@ public class SubmissionsController: ControllerBase
         _service = service;
     }
 
-    // GET /api/Submissions
+    // GET /api/submissions
+    /// <summary>
+    /// Retrieves all the Submission.
+    /// </summary>
+    /// <returns>All the Submission.</returns>
+    /// <response code="200">Returns all the Submission.</response>
     [HttpGet]
     public async Task<ActionResult> GetAllSubmissions()
     {
@@ -27,7 +32,14 @@ public class SubmissionsController: ControllerBase
         return Ok(submissionData);
     }
 
-    // GET /api/Submissions/{id}
+    // GET /api/submissions/{id}
+    /// <summary>
+    /// Retrieves a specific Submission by ID.
+    /// </summary>
+    /// <param name="id">The ID of the Submission to retrieve.</param>
+    /// <returns>The requested Submission.</returns>
+    /// <response code="200">Returns the requested Submission.</response>
+    /// <response code="404">If the Submission is not found.</response>
     [HttpGet("{id}")]
     public async Task<ActionResult> GetSubmissionById(int id)
     {
@@ -40,7 +52,13 @@ public class SubmissionsController: ControllerBase
         return Ok(submission);
     }   
 
-    // POST /api/Submissions
+    // POST /api/submissions
+    /// <summary>
+    /// Creates a new Submission.
+    /// </summary>
+    /// <param name="submission">Submission details required for creation</param>
+    /// <returns>The newly created Submission.</returns>
+    /// <response code="200">Returns the newly created Submission.</response>
     [HttpPost]
     public async Task<ActionResult> CreateSubmission(CreateSubmissionRequest submission)
     {

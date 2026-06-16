@@ -19,7 +19,12 @@ public class TaskAssignmentController: ControllerBase
         _service = service;
     }
 
-    // GET /api/TaskAssignments
+    // GET /api/task-assignments
+    /// <summary>
+    /// Retrieves all the TaskAssignments.
+    /// </summary>
+    /// <returns>All the TaskAssignments.</returns>
+    /// <response code="200">Returns all the TaskAssignments.</response>
     [HttpGet]
     public async Task<ActionResult> GetAllTaskAssignments()
     {
@@ -27,7 +32,14 @@ public class TaskAssignmentController: ControllerBase
         return Ok(taskAssignmentData);
     }
 
-    // GET /api/TaskAssignments/{id}
+    // GET /api/task-assignments/{id}
+    /// <summary>
+    /// Retrieves a specific TaskAssignment by ID.
+    /// </summary>
+    /// <param name="id">The ID of the TaskAssignment to retrieve.</param>
+    /// <returns>The requested TaskAssignment.</returns>
+    /// <response code="200">Returns the requested TaskAssignment.</response>
+    /// <response code="404">If the TaskAssignment is not found.</response>
     [HttpGet("{id}")]
     public async Task<ActionResult> GetTaskAssignmentById(int id)
     {
@@ -40,7 +52,13 @@ public class TaskAssignmentController: ControllerBase
         return Ok(taskAssignment);
     }   
 
-    // POST /api/TaskAssignments
+    // POST /api/task-assignments
+    /// <summary>
+    /// Creates a new TaskAssignments.
+    /// </summary>
+    /// <param name="taskAssignment">TaskAssignments details required for creation</param>
+    /// <returns>The newly created TaskAssignments.</returns>
+    /// <response code="200">Returns the newly created TaskAssignments.</response>
     [HttpPost]
     public async Task<ActionResult> CreateTaskAssignment(CreateTaskAssignmentRequest taskAssignment)
     {
@@ -54,7 +72,14 @@ public class TaskAssignmentController: ControllerBase
         return Ok(taskAssignmentResponse);
     }
 
-    // PUT /api/TaskAssignments/{id}
+    // PUT /api/task-assignments/{id}
+    /// <summary>
+    /// Update a specific TaskAssignment by ID.
+    /// </summary>
+    /// <param name="id">The ID of the TaskAssignment to retrieve.</param>
+    /// <returns>The updated TaskAssignment.</returns>
+    /// <response code="200">Returns the updated TaskAssignment.</response>
+    /// <response code="404">If the TaskAssignment is not found.</response>
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateTaskAssignmentDetails(int id, UpdateTaskAssignmentRequest updateTaskAssignmentRequest)
     {

@@ -19,7 +19,12 @@ public class LearningTaskController: ControllerBase
         _service = service;
     }
 
-    // GET /api/LearningTasks
+    // GET /api/learning-tasks
+    /// <summary>
+    /// Retrieves all the LearningTasks.
+    /// </summary>
+    /// <returns>All the LearningTasks.</returns>
+    /// <response code="200">Returns all the LearningTasks.</response>
     [HttpGet]
     public async Task<ActionResult> GetAllLearningTasks()
     { 
@@ -27,7 +32,14 @@ public class LearningTaskController: ControllerBase
         return Ok(learningTaskData);
     }
 
-    // GET /api/LearningTasks/{id}
+    // GET /api/learning-tasks/{id}
+    /// <summary>
+    /// Retrieves a specific LearningTasks by ID.
+    /// </summary>
+    /// <param name="id">The ID of the LearningTasks to retrieve.</param>
+    /// <returns>The requested LearningTasks.</returns>
+    /// <response code="200">Returns the requested LearningTasks.</response>
+    /// <response code="404">If the LearningTasks is not found.</response>
     [HttpGet("{id}")]
     public async Task<ActionResult> GetLearningTaskById(int id)
     {
@@ -40,7 +52,13 @@ public class LearningTaskController: ControllerBase
         return Ok(learningTask);
     }   
 
-    // POST /api/LearningTasks
+    // POST /api/learning-tasks
+    /// <summary>
+    /// Creates a new LearningTask.
+    /// </summary>
+    /// <param name="learningTask">LearningTask details required for creation</param>
+    /// <returns>The newly created LearningTask.</returns>
+    /// <response code="200">Returns the newly created LearningTask.</response>
     [HttpPost]
     public async Task<ActionResult> CreateLearningTask(CreateLearningTaskRequest learningTask)
     {
@@ -49,7 +67,14 @@ public class LearningTaskController: ControllerBase
         return Ok(learningTaskResponse);
     }
 
-    // PUT /api/LearningTasks/{id}
+    // PUT /api/learning-tasks/{id}
+      /// <summary>
+    /// Update a specific LearningTask by ID.
+    /// </summary>
+    /// <param name="id">The ID of the LearningTask to retrieve.</param>
+    /// <returns>The updated LearningTask.</returns>
+    /// <response code="200">Returns the updated LearningTask.</response>
+    /// <response code="404">If the LearningTask is not found.</response>
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateLearningTaskDetails(int id, UpdateLearningTaskRequest learningTask)
     {
@@ -63,7 +88,14 @@ public class LearningTaskController: ControllerBase
         return Ok(updatedLearningTaskDetails);
     }
 
-    // DELETE /api/LearningTasks/{id}
+    // DELETE /api/learning-tasks/{id}
+    /// <summary>
+    /// Delete a specific LearningTask by ID.
+    /// </summary>
+    /// <param name="id">The ID of the LearningTask to retrieve.</param>
+    /// <returns>The deleted LearningTask.</returns>
+    /// <response code="200">Returns the deleted LearningTask.</response>
+    /// <response code="404">If the LearningTask is not found.</response>
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteLearningTask(int id)
     {
