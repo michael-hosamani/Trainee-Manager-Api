@@ -31,9 +31,9 @@ public class AuthController: ControllerBase
     }
 
     [HttpPost("refresh")]
-    public ActionResult Refresh(RefreshTokenDto refreshTokenDto)
+    public async Task<ActionResult> Refresh(RefreshTokenDto refreshTokenDto)
     {
-        var res =  authService.refreshToken(refreshTokenDto);
+        LoginResponse? res = await authService.Refresh(refreshTokenDto);
         if(res == null)
         {
             return Unauthorized();

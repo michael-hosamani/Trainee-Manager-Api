@@ -52,7 +52,7 @@ public class AuthService: IAuthService
         user.RefreshToken = refreshToken.jwt;
         user.RefreshTokenExpiry = refreshToken.expiryDate;
 
-        _db.SaveChangesAsync(); 
+        await _db.SaveChangesAsync(); 
 
         UserWithoutPassword userWithoutPassword = new UserWithoutPassword
         {
@@ -76,7 +76,7 @@ public class AuthService: IAuthService
         };
     }
 
-    public LoginResponse? refreshToken(RefreshTokenDto refreshTokenDto)
+    public async Task<LoginResponse?> Refresh(RefreshTokenDto refreshTokenDto)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]));
 
@@ -110,10 +110,18 @@ public class AuthService: IAuthService
             return null;
         }
 
+        if(user.RefreshTokenExpiry >= DateTime.UtcNow)
+        {
+            _logger.LogError("Refresh token has expired");
+            return null;
+        }
+
         var newAccessToken = GenerateToken(user, AuthTokenType.AccessToken);
         var newRefreshToken = GenerateToken(user, AuthTokenType.RefreshToken);
         user.RefreshToken = newRefreshToken.jwt;
         user.RefreshTokenExpiry = newRefreshToken.expiryDate;
+
+        await _db.SaveChangesAsync(); 
 
         UserWithoutPassword userWithoutPassword = new UserWithoutPassword
         {

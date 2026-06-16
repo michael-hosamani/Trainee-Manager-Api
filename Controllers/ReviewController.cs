@@ -7,7 +7,7 @@ using TraineeManagementApi.Dto;
 
 namespace TraineeManagementApi.Contollers;
 
-// [Authorize]
+[Authorize(Roles = "Mentor, Trainee")]
 [ApiController]
 [Route("api/[controller]")]
 public class ReviewsController: ControllerBase 
