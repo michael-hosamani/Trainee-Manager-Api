@@ -28,8 +28,6 @@ builder.Services.AddCors(options =>
                .AllowAnyMethod();
       }
    );
-
-
 });
 
 builder.Services.AddControllers()
@@ -71,6 +69,7 @@ builder.Services.AddScoped<ILearningTaskService, LearningTaskService>();
 builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
 builder.Services.AddScoped<ISubmissionService, SubmissionService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services
     .AddAuthentication(options =>
@@ -129,11 +128,11 @@ using(var scope = app.Services.CreateAsyncScope())
    }
 }
 
+app.UseCors("AllowSpecificOrigin");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 app.MapControllers();
-app.UseCors("AllowSpecificOrigin");
 
 app.MapGet("/", () => "Hello World!");
 

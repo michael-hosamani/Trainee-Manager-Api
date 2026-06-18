@@ -41,7 +41,7 @@ public class TaskAssignmentService: ITaskAssignmentService
             return null;
         }
         return result;
-    }
+    }  
 
     // This funciton creates a new TaskAssignment 
     public async Task<TaskAssignmentResponse> CreateTaskAssignment(CreateTaskAssignmentRequest taskAssignment)

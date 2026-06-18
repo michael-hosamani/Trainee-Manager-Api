@@ -14,12 +14,15 @@ public class AuthService: IAuthService
     private readonly AppDbContext _db;
     private readonly IConfiguration _configuration;
     private readonly ILogger<AuthService> _logger;
+    private readonly ITokenService _TokenService;
+   
 
-    public AuthService(AppDbContext db, IConfiguration configuration, ILogger<AuthService> logger)
+    public AuthService(AppDbContext db, IConfiguration configuration, ILogger<AuthService> logger, ITokenService TokenService)
     {   
         _db = db;
         _configuration = configuration;
         _logger = logger;
+        _TokenService = TokenService;
     }
 
     public async Task<LoginResponse?> UserLogin(LoginRequest loginRequest)
@@ -46,8 +49,8 @@ public class AuthService: IAuthService
             new Claim(ClaimTypes.Role, user.Role.ToString())
         };
 
-        var accessToken = this.GenerateToken(user, AuthTokenType.AccessToken);
-        var refreshToken = this.GenerateToken(user, AuthTokenType.RefreshToken);
+        var accessToken = _TokenService.GenerateToken(user, AuthTokenType.AccessToken);
+        var refreshToken = _TokenService.GenerateToken(user, AuthTokenType.RefreshToken);
 
         user.RefreshToken = refreshToken.jwt;
         user.RefreshTokenExpiry = refreshToken.expiryDate;
@@ -116,8 +119,8 @@ public class AuthService: IAuthService
             return null;
         }
 
-        var newAccessToken = GenerateToken(user, AuthTokenType.AccessToken);
-        var newRefreshToken = GenerateToken(user, AuthTokenType.RefreshToken);
+        var newAccessToken = _TokenService.GenerateToken(user, AuthTokenType.AccessToken);
+        var newRefreshToken = _TokenService.GenerateToken(user, AuthTokenType.RefreshToken);
         user.RefreshToken = newRefreshToken.jwt;
         user.RefreshTokenExpiry = newRefreshToken.expiryDate;
 
@@ -141,50 +144,6 @@ public class AuthService: IAuthService
             Token = newAccessToken.jwt,
             ExpiresIn = newAccessToken.expiryDate,
             User = userWithoutPassword
-        };
-    }
-
-    public GenerateTokenResult GenerateToken(User user, AuthTokenType tokenType){
-        Claim[] claims;
-        if(tokenType == AuthTokenType.AccessToken){
-            claims = 
-            [
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),  
-                new Claim(ClaimTypes.Name, user.Username), 
-                new Claim(ClaimTypes.Role, user.Role.ToString())
-            
-            ];
-        }
-        else{
-            claims = 
-            [
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),  
-            ];
-        }
-        
-
-        var key = _configuration["Jwt:Key"];
-
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-        var token = new JwtSecurityToken(
-            issuer: _configuration["Jwt:Issuer"],
-            audience: _configuration["Jwt:Audience"],
-            claims: claims,
-            expires: tokenType == AuthTokenType.AccessToken ? DateTime.UtcNow.AddMinutes(10) : DateTime.UtcNow.AddDays(7),
-            signingCredentials: credentials
-        );
-
-        var handler = new JwtSecurityTokenHandler();
-
-        var jwt = handler.WriteToken(token);
-
-        var expiryDate = handler.ReadJwtToken(jwt).ValidTo;
-
-        return new GenerateTokenResult{
-            jwt = jwt,
-            expiryDate = expiryDate
         };
     }
 }
