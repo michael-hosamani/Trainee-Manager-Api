@@ -69,6 +69,13 @@ public class SubmissionsController: ControllerBase
         return Ok(submissionResponse);
     }
 
+    // POST /api/submissions/{submissionId}/files
+    /// <summary>
+    /// Uploads a file
+    /// </summary>
+    /// <param name="submissionId">SubmissionId required to upload file</param>
+    /// <returns>The newly generated path for the file uploaded.</returns>
+    /// <response code="200">Returns the newly generated path for the file uploaded.</response>
     [HttpPost("{submissionId}/files")]
     public async Task<ActionResult> UploadFile(int submissionId, CreateSubmissionFileRequest createSubmissionFileRequest)
     {

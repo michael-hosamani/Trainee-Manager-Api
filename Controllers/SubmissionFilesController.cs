@@ -17,6 +17,13 @@ public class SubmissionFilesController: ControllerBase
     }
 
     // GET /api/submission-files/{id}/download route
+    /// <summary>
+    /// Retrieves a download link for a specific Submission-file by ID.
+    /// </summary>
+    /// <param name="id">The ID of the download link for a specific Submission-file to retrieve.</param>
+    /// <returns>The requested download link for a specific Submission-file.</returns>
+    /// <response code="200">Returns the requested download link for a specific Submission-file.</response>
+    /// <response code="404">If the Submission-file is not found.</response>
     [HttpGet("{id}/download")]
     public async Task<ActionResult> Get(int id){
         DownloadFileType file = await _service.DownloadFile(id);
@@ -24,7 +31,14 @@ public class SubmissionFilesController: ControllerBase
         return File(file.Bytes, file.ContentType, file.FileName);
     }
 
-    // GET /api/submission-files/{id}/download route
+    // DELETE /api/submission-files/{id} route
+    /// <summary>
+    /// Delete a specific Submission-file by ID.
+    /// </summary>
+    /// <param name="id">The ID of the Submission-file to retrieve.</param>
+    /// <returns>The deleted Submission-file.</returns>
+    /// <response code="200">Returns the deleted Submission-file.</response>
+    /// <response code="404">If the Submission-file is not found.</response>
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int id){
         bool isDeleted = await _service.DeleteFile(id);
