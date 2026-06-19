@@ -4,6 +4,7 @@ namespace TraineeManagementApi.Services;
 public class FileStorageService:IFileStorageService
 {
     private readonly string _uploadPath;
+    private readonly long _maxFileSize = 5 * 1024 * 1024;
     private readonly string[] _allowedExtensions = { ".pdf", ".docx", ".txt" };
 
     public FileStorageService(IWebHostEnvironment environment)
@@ -18,6 +19,10 @@ public class FileStorageService:IFileStorageService
     {
         if (file == null || file.Length == 0)
             throw new BadRequestException("File is null or empty.");
+
+        if (file.Length > _maxFileSize)
+            throw new BadRequestException($"File exceeds maximum size of {_maxFileSize / (1024 * 1024)} MB.");
+
 
         var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
         if (!_allowedExtensions.Contains(extension))
@@ -34,4 +39,22 @@ public class FileStorageService:IFileStorageService
         return filePath;
     }
 
+    public bool ExistsAsync(string filePath)
+    {
+        if (File.Exists(filePath))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public bool DeleteAsync(string filePath)
+    {
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+            return true;
+        }
+        return false;
+    }
 }

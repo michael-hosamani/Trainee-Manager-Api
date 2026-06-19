@@ -110,6 +110,7 @@ public class SubmissionService: ISubmissionService
         await _db.SubmissionFiles.AddAsync(submissionFile);
         await _db.SaveChangesAsync();
         
+        _logger.LogInformation("Submission file created successfully");
         return generatedPath;
     }
 

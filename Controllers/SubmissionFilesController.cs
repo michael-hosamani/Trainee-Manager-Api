@@ -27,4 +27,15 @@ public class SubmissionFilesController: ControllerBase
         return File(content, contentType, fileName);
     }
 
+    // GET /api/submission-files/{id}/download route
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Delete(int id){
+        bool isDeleted = await _service.DeleteFile(id);
+        if(isDeleted == false)
+        {
+            return NotFound("Invalid submission file Id");
+        }
+
+        return NoContent();
+    }
 }
