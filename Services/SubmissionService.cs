@@ -82,7 +82,7 @@ public class SubmissionService: ISubmissionService
     }
 
     // This function is used to add submissionfile to the SubmissionFile model in the database and store the file using fileStorageService
-    public async Task<string> UploadFile(int submissionId, CreateSubmissionFileRequest createSubmissionFileRequest)
+    public async Task<string> UploadFile(int submissionId, CreateSubmissionFileRequest createSubmissionFileRequest, CancellationToken cancellationToken)
     {   
         Submission? findSubmission = await _db.Submissions.SingleOrDefaultAsync(s => s.Id == submissionId);
         if(findSubmission == null)
@@ -91,7 +91,7 @@ public class SubmissionService: ISubmissionService
             throw new NotFoundException("Submissions not found", submissionId);
         }
 
-        string generatedPath = await _fileStorageService.SaveAsync(createSubmissionFileRequest.File);
+        string generatedPath = await _fileStorageService.SaveAsync(createSubmissionFileRequest.File, cancellationToken);
 
         string checksum = GetFileChecksum(generatedPath, "SHA256");
 

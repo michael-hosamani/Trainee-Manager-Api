@@ -15,7 +15,7 @@ public class SubmissionFileService: ISubmissionFileService
         _logger = logger;
         _fileStorageService = fileStorageService;
     }
-    public async Task<DownloadFileType> DownloadFile(int id)
+    public async Task<DownloadFileType> DownloadFile(int id, CancellationToken cancellationToken)
     {
         SubmissionFile? submissionFile = await _db.SubmissionFiles.FindAsync(id);
         if (submissionFile == null)
@@ -25,10 +25,10 @@ public class SubmissionFileService: ISubmissionFileService
         }
 
         _logger.LogInformation("Submission File created successfully with {id}", id);
-        return _fileStorageService.OpenReadAsync(submissionFile);
+        return _fileStorageService.OpenReadAsync(submissionFile, cancellationToken);
     }
 
-    public async Task<bool> DeleteFile(int id)
+    public async Task<bool> DeleteFile(int id, CancellationToken cancellationToken)
     {
         SubmissionFile? submissionFile = await _db.SubmissionFiles.FindAsync(id);
         if (submissionFile == null)
@@ -37,7 +37,7 @@ public class SubmissionFileService: ISubmissionFileService
             return false;
         }
 
-        bool isDeleted = _fileStorageService.DeleteAsync(submissionFile.GeneratedStorageName);
+        bool isDeleted = _fileStorageService.DeleteAsync(submissionFile.GeneratedStorageName, cancellationToken);
 
         if (isDeleted)
         {

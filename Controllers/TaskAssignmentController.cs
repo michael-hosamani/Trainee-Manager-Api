@@ -41,9 +41,9 @@ public class TaskAssignmentController: ControllerBase
     /// <response code="200">Returns the requested TaskAssignment.</response>
     /// <response code="404">If the TaskAssignment is not found.</response>
     [HttpGet("{id}")]
-    public async Task<ActionResult> GetTaskAssignmentById(int id)
+    public async Task<ActionResult> GetTaskAssignmentById(int id, CancellationToken cancellationToken)
     {
-        TaskAssignment? taskAssignment = await _service.GetTaskAssignmentById(id);
+        TaskAssignment? taskAssignment = await _service.GetTaskAssignmentById(id, cancellationToken);
         if(taskAssignment == null)
         {
             return NotFound(new { message = "TaskAssignment not found" });
@@ -76,9 +76,9 @@ public class TaskAssignmentController: ControllerBase
     /// <response code="200">Returns the updated TaskAssignment.</response>
     /// <response code="404">If the TaskAssignment is not found.</response>
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateTaskAssignmentDetails(int id, UpdateTaskAssignmentRequest updateTaskAssignmentRequest)
+    public async Task<ActionResult> UpdateTaskAssignmentDetails(int id, UpdateTaskAssignmentRequest updateTaskAssignmentRequest, CancellationToken cancellationToken)
     {
-        TaskAssignment? updatedTaskAssignmentDetails = await _service.UpdateTaskAssignmentDetails(id, updateTaskAssignmentRequest);
+        TaskAssignment? updatedTaskAssignmentDetails = await _service.UpdateTaskAssignmentDetails(id, updateTaskAssignmentRequest, cancellationToken);
 
         if(updatedTaskAssignmentDetails == null)
         {

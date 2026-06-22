@@ -8,10 +8,10 @@ namespace TraineeManagementApi.Services;
 public interface ITraineeService
 {
     Task<List<Trainee>> GetAllTrainees();
-    Task<Trainee?> GetTraineeById(int id);
+    Task<Trainee?> GetTraineeById(int id, CancellationToken cancellationToken);
     Task<TraineeResponse> CreateTrainee(CreateTraineeRequest trainee);
-    Task<Trainee?> UpdateTraineeDetails(int id, UpdateTraineeRequest trainee);
-    Task<bool> DeleteTraineeDetails(int id);
+    Task<Trainee?> UpdateTraineeDetails(int id, UpdateTraineeRequest trainee, CancellationToken cancellationToken);
+    Task<bool> DeleteTraineeDetails(int id, CancellationToken cancellationToken);
 
     Task<IQueryable<Trainee>> SearchTrainees(string search);
     Task<PagedResponse<Trainee>> GetTraineeUsingPagination(PaginationParams paginationParams, string? search, Status? status);

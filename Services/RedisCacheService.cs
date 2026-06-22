@@ -15,11 +15,11 @@ public class RedisCacheService: IRedisCacheService
         _logger = logger;
     }
 
-    public async Task<T?> GetAsync<T>(string key)
+    public async Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default)
     {
         try
         {
-            string? cachedData = await _cache.GetStringAsync(key);
+            string? cachedData = await _cache.GetStringAsync(key, cancellationToken);
             if(cachedData == null)
             {
                 _logger.LogWarning("Value not found for key: {key} in redis", key);
@@ -34,13 +34,13 @@ public class RedisCacheService: IRedisCacheService
             return default;
         }
     }
-    public async void SetAsync<T>(string key, T value, TimeSpan ttl)
+    public async void SetAsync<T>(string key, T value, TimeSpan ttl, CancellationToken cancellationToken = default)
     {
         try
         { 
             var options = new DistributedCacheEntryOptions().SetAbsoluteExpiration(ttl);
             string jsonValue = JsonSerializer.Serialize(value);
-            await _cache.SetStringAsync(key, jsonValue, options);
+            await _cache.SetStringAsync(key, jsonValue, options, cancellationToken);
         }
         catch(Exception ex)
         {
@@ -48,11 +48,11 @@ public class RedisCacheService: IRedisCacheService
         }
     }
 
-    public async void RemoveAsync(string key)
+    public async void RemoveAsync(string key, CancellationToken cancellationToken = default)
     {
         try
         {   
-            await _cache.RemoveAsync(key);
+            await _cache.RemoveAsync(key, cancellationToken);
         }
         catch(Exception ex)
         {

@@ -41,9 +41,9 @@ public class TraineesController: ControllerBase
     /// <response code="200">Returns the requested Trainee.</response>
     /// <response code="404">If the Trainee is not found.</response>
     [HttpGet("{id}")]
-    public async Task<ActionResult> GetTraineeById(int id)
+    public async Task<ActionResult> GetTraineeById(int id, CancellationToken cancellationToken)
     {
-        Trainee? trainee = await service.GetTraineeById(id);
+        Trainee? trainee = await service.GetTraineeById(id, cancellationToken);
         if(trainee == null)
         {
             return NotFound(new { message = "Trainee not found" });
@@ -76,9 +76,9 @@ public class TraineesController: ControllerBase
     /// <response code="200">Returns the updated Trainee.</response>
     /// <response code="404">If the Trainee is not found.</response>
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateTraineeDetails(int id, UpdateTraineeRequest trainee)
+    public async Task<ActionResult> UpdateTraineeDetails(int id, UpdateTraineeRequest trainee, CancellationToken cancellationToken)
     {
-        Trainee? updatedTraineeDetails = await service.UpdateTraineeDetails(id, trainee);
+        Trainee? updatedTraineeDetails = await service.UpdateTraineeDetails(id, trainee, cancellationToken);
 
         if(updatedTraineeDetails == null)
         {
@@ -97,9 +97,9 @@ public class TraineesController: ControllerBase
     /// <response code="200">Returns the deleted Trainee.</response>
     /// <response code="404">If the Trainee is not found.</response>
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteTrainee(int id)
+    public async Task<ActionResult> DeleteTrainee(int id, CancellationToken cancellationToken)
     {
-        bool isTraineeDeleted = await service.DeleteTraineeDetails(id);
+        bool isTraineeDeleted = await service.DeleteTraineeDetails(id, cancellationToken);
         if (isTraineeDeleted == false)
         {
             return NotFound(new { message = "Invalid Trainee Data"});

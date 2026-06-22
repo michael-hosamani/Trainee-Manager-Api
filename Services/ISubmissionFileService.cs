@@ -6,7 +6,7 @@ namespace TraineeManagementApi.Services;
 
 public interface ISubmissionFileService
 {
-    Task<DownloadFileType> DownloadFile(int id);
+    Task<DownloadFileType> DownloadFile(int id, CancellationToken cancellationToken);
 
-    Task<bool> DeleteFile(int id);
+    Task<bool> DeleteFile(int id, CancellationToken cancellationToken);
 }

@@ -18,7 +18,7 @@ public class FileStorageService:IFileStorageService
     }
 
     // this function stores the input file in the file-system
-    public async Task<string> SaveAsync(IFormFile file)
+    public async Task<string> SaveAsync(IFormFile file, CancellationToken cancellationToken)
     {
         if (file == null || file.Length == 0)
             throw new BadRequestException("File is null or empty.");
@@ -42,7 +42,7 @@ public class FileStorageService:IFileStorageService
         return filePath;
     }
 
-    public DownloadFileType OpenReadAsync(SubmissionFile file)
+    public DownloadFileType OpenReadAsync(SubmissionFile file, CancellationToken cancellationToken)
     {
         var net = new System.Net.WebClient();
         var data = net.DownloadData(file.GeneratedStorageName);
@@ -52,7 +52,7 @@ public class FileStorageService:IFileStorageService
         return new DownloadFileType{Bytes = content, FileName = fileName, ContentType = contentType};
     }
 
-    public bool ExistsAsync(string filePath)
+    public bool ExistsAsync(string filePath, CancellationToken cancellationToken)
     {
         if (File.Exists(filePath))
         {
@@ -61,7 +61,7 @@ public class FileStorageService:IFileStorageService
         return false;
     }
 
-    public bool DeleteAsync(string filePath)
+    public bool DeleteAsync(string filePath, CancellationToken cancellationToken)
     {
         if (File.Exists(filePath))
         {

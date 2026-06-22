@@ -9,5 +9,5 @@ public interface ISubmissionService
     Task<Submission?> GetSubmissionById(int id);
     Task<SubmissionResponse> CreateSubmission(CreateSubmissionRequest submission);
 
-    Task<string> UploadFile(int submissionId, CreateSubmissionFileRequest createSubmissionFileRequest);
+    Task<string> UploadFile(int submissionId, CreateSubmissionFileRequest createSubmissionFileRequest, CancellationToken cancellationToken);
 }

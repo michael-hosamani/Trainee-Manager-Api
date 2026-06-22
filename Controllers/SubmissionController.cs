@@ -77,9 +77,9 @@ public class SubmissionsController: ControllerBase
     /// <returns>The newly generated path for the file uploaded.</returns>
     /// <response code="200">Returns the newly generated path for the file uploaded.</response>
     [HttpPost("{submissionId}/files")]
-    public async Task<ActionResult> UploadFile(int submissionId, CreateSubmissionFileRequest createSubmissionFileRequest)
+    public async Task<ActionResult> UploadFile(int submissionId, CreateSubmissionFileRequest createSubmissionFileRequest, CancellationToken cancellationToken)
     {
-        string res = await _service.UploadFile(submissionId, createSubmissionFileRequest);
+        string res = await _service.UploadFile(submissionId, createSubmissionFileRequest, cancellationToken);
         return Ok(res);
     }
 }

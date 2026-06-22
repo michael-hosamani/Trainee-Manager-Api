@@ -22,10 +22,10 @@ public class TraineeService(ILogger<TraineeService> logger, AppDbContext db, IRe
     }
 
     // This function fetches a Trainee based on its Id
-    public async Task<Trainee?> GetTraineeById(int id)
+    public async Task<Trainee?> GetTraineeById(int id, CancellationToken cancellationToken)
     {
         string key = $"trainee:{id}";
-        Trainee? data = await _redisCacheService.GetAsync<Trainee>(key);
+        Trainee? data = await _redisCacheService.GetAsync<Trainee>(key, cancellationToken);
         if(data != null)
         {
             return data;
@@ -41,7 +41,7 @@ public class TraineeService(ILogger<TraineeService> logger, AppDbContext db, IRe
             return null;
         }
 
-        _redisCacheService.SetAsync(key, result, TimeSpan.FromMinutes(30));
+        _redisCacheService.SetAsync(key, result, TimeSpan.FromMinutes(30), cancellationToken);
 
         return result;
     }
@@ -80,7 +80,7 @@ public class TraineeService(ILogger<TraineeService> logger, AppDbContext db, IRe
     }
 
     // This function fetches the trainee based on its Id and updates certain fields entered through the body
-    public async Task<Trainee?> UpdateTraineeDetails(int id, UpdateTraineeRequest trainee)
+    public async Task<Trainee?> UpdateTraineeDetails(int id, UpdateTraineeRequest trainee, CancellationToken cancellationToken)
     {
         var findTrainee = await _db.Trainees.SingleOrDefaultAsync(t => t.Id == id);
         if(findTrainee == null)
@@ -107,8 +107,8 @@ public class TraineeService(ILogger<TraineeService> logger, AppDbContext db, IRe
         findTrainee.UpdatedDate = DateTime.Now;
 
         await _db.SaveChangesAsync();
-        _redisCacheService.RemoveAsync($"trainee:{id}");
-        _redisCacheService.SetAsync($"trainee:{id}", findTrainee, TimeSpan.FromMinutes(30));
+        _redisCacheService.RemoveAsync($"trainee:{id}", cancellationToken);
+        _redisCacheService.SetAsync($"trainee:{id}", findTrainee, TimeSpan.FromMinutes(30), cancellationToken);
 
         _logger.LogInformation("Trainee updated successfully");
 
@@ -116,7 +116,7 @@ public class TraineeService(ILogger<TraineeService> logger, AppDbContext db, IRe
     }
 
     // This function fetches by Id and deletes a trainee
-    public async Task<bool> DeleteTraineeDetails(int id)
+    public async Task<bool> DeleteTraineeDetails(int id, CancellationToken cancellationToken)
     {
         var trainee = await _db.Trainees.SingleOrDefaultAsync(t => t.Id == id);
         if(trainee == null)
@@ -128,7 +128,7 @@ public class TraineeService(ILogger<TraineeService> logger, AppDbContext db, IRe
         _db.Trainees.Remove(trainee);
         await _db.SaveChangesAsync();
 
-        _redisCacheService.RemoveAsync($"trainee:{id}");
+        _redisCacheService.RemoveAsync($"trainee:{id}", cancellationToken);
 
         _logger.LogInformation("Trainee deleted successfully");
 

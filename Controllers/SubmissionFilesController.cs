@@ -25,8 +25,8 @@ public class SubmissionFilesController: ControllerBase
     /// <response code="200">Returns the requested download link for a specific Submission-file.</response>
     /// <response code="404">If the Submission-file is not found.</response>
     [HttpGet("{id}/download")]
-    public async Task<ActionResult> Get(int id){
-        DownloadFileType file = await _service.DownloadFile(id);
+    public async Task<ActionResult> Get(int id, CancellationToken cancellationToken){
+        DownloadFileType file = await _service.DownloadFile(id, cancellationToken);
 
         return File(file.Bytes, file.ContentType, file.FileName);
     }
@@ -40,8 +40,8 @@ public class SubmissionFilesController: ControllerBase
     /// <response code="200">Returns the deleted Submission-file.</response>
     /// <response code="404">If the Submission-file is not found.</response>
     [HttpDelete("{id}")]
-    public async Task<ActionResult> Delete(int id){
-        bool isDeleted = await _service.DeleteFile(id);
+    public async Task<ActionResult> Delete(int id, CancellationToken cancellationToken){
+        bool isDeleted = await _service.DeleteFile(id, cancellationToken);
         if(isDeleted == false)
         {
             return NotFound("Invalid submission file Id");

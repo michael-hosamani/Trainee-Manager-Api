@@ -31,10 +31,10 @@ public class TaskAssignmentService: ITaskAssignmentService
     }
 
     // This function fetches a TaskAssignment based on its Id
-    public async Task<TaskAssignment?> GetTaskAssignmentById(int id)
+    public async Task<TaskAssignment?> GetTaskAssignmentById(int id, CancellationToken cancellationToken)
     {
         string key = $"taskAssignment:{id}";
-        TaskAssignment? data = await _redisCacheService.GetAsync<TaskAssignment>(key);
+        TaskAssignment? data = await _redisCacheService.GetAsync<TaskAssignment>(key, cancellationToken);
         if(data != null)
         {
             return data;
@@ -49,7 +49,7 @@ public class TaskAssignmentService: ITaskAssignmentService
             _logger.LogWarning("Task Assignment not found with {id}", id);
             return null;
         }
-        _redisCacheService.SetAsync(key, result, TimeSpan.FromMinutes(30));
+        _redisCacheService.SetAsync(key, result, TimeSpan.FromMinutes(30), cancellationToken);
         return result;
     }  
 
@@ -110,7 +110,7 @@ public class TaskAssignmentService: ITaskAssignmentService
     }
 
     // This function fetches the TaskAssignment based on its Id and updates certain fields entered through the body
-    public async Task<TaskAssignment?> UpdateTaskAssignmentDetails(int id, [FromBody] UpdateTaskAssignmentRequest updateTaskAssignmentRequest)
+    public async Task<TaskAssignment?> UpdateTaskAssignmentDetails(int id, [FromBody] UpdateTaskAssignmentRequest updateTaskAssignmentRequest, CancellationToken cancellationToken)
     {
         var findTaskAssignment = await _db.TaskAssignments.SingleOrDefaultAsync(t => t.Id == id);
         if(findTaskAssignment == null)
@@ -124,8 +124,8 @@ public class TaskAssignmentService: ITaskAssignmentService
 
         await _db.SaveChangesAsync();
         string key = $"taskAssignment:{id}";
-        _redisCacheService.RemoveAsync(key);
-        _redisCacheService.SetAsync(key, findTaskAssignment, TimeSpan.FromMinutes(30));
+        _redisCacheService.RemoveAsync(key, cancellationToken);
+        _redisCacheService.SetAsync(key, findTaskAssignment, TimeSpan.FromMinutes(30), cancellationToken);
 
         _logger.LogInformation("TaskAssignment updated successfully");
 
