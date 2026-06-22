@@ -17,24 +17,46 @@ public class RedisCacheService: IRedisCacheService
 
     public async Task<T?> GetAsync<T>(string key)
     {
-        string? cachedData = await _cache.GetStringAsync(key);
-        if(cachedData == null)
+        try
         {
-            _logger.LogWarning("Value not found for key: {key} in redis", key);
+            string? cachedData = await _cache.GetStringAsync(key);
+            if(cachedData == null)
+            {
+                _logger.LogWarning("Value not found for key: {key} in redis", key);
+                return default;
+            }
+
+            return JsonSerializer.Deserialize<T>(cachedData);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning("Error occured while fetching value for key: {key} with Excpetion: {ex}", key, ex);
             return default;
         }
-
-        return JsonSerializer.Deserialize<T>(cachedData);
     }
     public async void SetAsync<T>(string key, T value, TimeSpan ttl)
     {
-        var options = new DistributedCacheEntryOptions().SetAbsoluteExpiration(ttl);
-        string jsonValue = JsonSerializer.Serialize(value);
-        await _cache.SetStringAsync(key, jsonValue, options);
+        try
+        { 
+            var options = new DistributedCacheEntryOptions().SetAbsoluteExpiration(ttl);
+            string jsonValue = JsonSerializer.Serialize(value);
+            await _cache.SetStringAsync(key, jsonValue, options);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogWarning("Error occured while setting value for key: {key} with Excpetion: {ex}", key, ex);
+        }
     }
 
     public async void RemoveAsync(string key)
     {
-        await _cache.RemoveAsync(key);
+        try
+        {   
+            await _cache.RemoveAsync(key);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogWarning("Error occured while removing value for key: {key} with Excpetion: {ex}", key, ex);
+        }
     }
 }

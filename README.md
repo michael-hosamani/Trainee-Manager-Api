@@ -36,7 +36,11 @@ Asp.net core and MySql
 5. Run the following command to create tables in the database 
   `dotnet ef database update`
 
-Once ran successfully, the code and the database are in sync. We can test the connection by using swagger UI, try adding one entry using POST end point and see if it is shown in the datase or not.
+Once ran successfully, the API and the database are in sync. We can test the connection by using swagger UI, try adding one entry using POST end point and see if it is shown in the datase or not.
+
+## Redis setup steps
+1. Add Database connection string
+  `dotnet user-secrets set "ConnectionStrings:Redis" "Your-Redis-Connection-String"`
 
 ## Login credentials for testing
 ``` javascript
