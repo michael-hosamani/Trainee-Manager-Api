@@ -34,7 +34,7 @@ public class RedisCacheService: IRedisCacheService
             return default;
         }
     }
-    public async void SetAsync<T>(string key, T value, TimeSpan ttl, CancellationToken cancellationToken = default)
+    public async Task SetAsync<T>(string key, T value, TimeSpan ttl, CancellationToken cancellationToken = default)
     {
         try
         { 
@@ -48,7 +48,7 @@ public class RedisCacheService: IRedisCacheService
         }
     }
 
-    public async void RemoveAsync(string key, CancellationToken cancellationToken = default)
+    public async Task RemoveAsync(string key, CancellationToken cancellationToken = default)
     {
         try
         {   

@@ -30,7 +30,7 @@ public class RabbitMQService: IRabbitMQService
 
         using var connection = await factory.CreateConnectionAsync();
         using var channel = await connection.CreateChannelAsync();
-
+ 
         await channel.QueueDeclareAsync(
             queue: _configuration["RabbitMQ:QueueName"],
             durable: true,

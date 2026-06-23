@@ -8,4 +8,4 @@ public class SubmissionProcessingRequested
     public int FileId { get; set; }
     public DateTime RequestedAt { get; set; }
     public required string ContractVersion { get; set; }
-}
+} 
