@@ -42,6 +42,14 @@ Once ran successfully, the API and the database are in sync. We can test the con
 1. Add Database connection string
   `dotnet user-secrets set "ConnectionStrings:Redis" "Your-Redis-Connection-String"`
 
+## Rabitmq setup
+1. Add RabbitMQ username
+  `dotnet user-secrets set "RabbitMQ:UserName" "admin"`
+
+2. Add RabbitMQ password
+  `dotnet user-secrets set "RabbitMQ:Password" "rabbitmq_password"`
+
+
 ## Login credentials for testing
 ``` javascript
 {

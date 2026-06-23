@@ -15,11 +15,15 @@ public class SubmissionService: ISubmissionService
     private readonly ILogger<SubmissionService> _logger;
 
     private readonly IFileStorageService _fileStorageService;
+    private readonly IRedisCacheService _redisCacheService;
+    private readonly IRabbitMQService _rabbitMQService;
 
-    public SubmissionService(AppDbContext db, ILogger<SubmissionService> logger, IFileStorageService fileStorageService){
+    public SubmissionService(AppDbContext db, ILogger<SubmissionService> logger, IFileStorageService fileStorageService, IRedisCacheService redisCacheService, IRabbitMQService rabbitMQService){
         _db = db;
         _logger = logger;
         _fileStorageService = fileStorageService;
+        _redisCacheService = redisCacheService;
+        _rabbitMQService = rabbitMQService;
     }
 
     // This function returns the list of all the Submissions
@@ -109,9 +113,44 @@ public class SubmissionService: ISubmissionService
         };
         await _db.SubmissionFiles.AddAsync(submissionFile);
         await _db.SaveChangesAsync();
+        SubmissionProcessingRequested submissionProcessingRequested = new()
+        {
+            MessageId = Guid.NewGuid(),
+            CorrelationId = Guid.NewGuid(),
+            SubmissionId = submissionId,
+            FileId = submissionFile.Id,
+            RequestedAt = DateTime.Now,
+            ContractVersion = "1.0.0"
+        };
+        await _rabbitMQService.PublishAsync(submissionProcessingRequested);
         
         _logger.LogInformation("Submission file created successfully");
         return generatedPath;
+    }
+
+    // This function fetches a Submission summary based on its Id
+    public async Task<Submission?> GetSubmissionSummaryById(int id, CancellationToken cancellationToken)
+    {
+        string key = $"submission-summary:{id}";
+        Submission? data = await _redisCacheService.GetAsync<Submission>(key, cancellationToken);
+        if(data != null)
+        {
+            return data;
+        }
+
+        Submission? result = await _db.Submissions
+                                .Include(s => s.Reviews)
+                                .Include(s => s.SubmissionFiles)
+                                .SingleOrDefaultAsync(t => t.Id == id);
+        if(result == null)
+        {
+            _logger.LogWarning("Submissoin not found with {id}", id);
+            return null;
+        }
+
+        _redisCacheService.SetAsync(key, result, TimeSpan.FromMinutes(30), cancellationToken);
+
+        return result;
     }
 
     /// <summary>

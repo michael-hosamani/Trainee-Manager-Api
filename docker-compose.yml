@@ -16,8 +16,21 @@ services:
       MYSQL_ROOT_PASSWORD: Root@123
       MYSQL_DATABASE: trainee_management_db
     volumes:
-      - mysql-data:/data
+      - mysql-data:/var/lib/mysql
+  rabbitmq:
+    image: docker-registry-002.zeuslearning.com/zeuslearning/rabbitmq:3.13.7-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: rabbitmq_password
+    volumes:
+    - rabbitmq-data:/var/lib/rabbitmq
+    restart: unless-stopped
 
 volumes:
   redis-data: 
   mysql-data:
+  rabbitmq-data:

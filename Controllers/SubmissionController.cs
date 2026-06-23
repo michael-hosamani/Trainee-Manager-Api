@@ -12,13 +12,11 @@ namespace TraineeManagementApi.Controllers;
 [Route("api/submissions")]
 public class SubmissionsController: ControllerBase 
 {
-    private ISubmissionService _service;
-    private IFileStorageService _fileStorageService;
+    private readonly ISubmissionService _service;
 
-    public SubmissionsController(ISubmissionService service, IFileStorageService fileStorageService)
+    public SubmissionsController(ISubmissionService service)
     {
         _service = service;
-        _fileStorageService = fileStorageService;
     }
 
     // GET /api/submissions
@@ -81,5 +79,25 @@ public class SubmissionsController: ControllerBase
     {
         string res = await _service.UploadFile(submissionId, createSubmissionFileRequest, cancellationToken);
         return Ok(res);
+    }
+
+    // GET /api/submissions/{id}/summary
+    /// <summary>
+    /// Retrieves a specific Submission summary by ID.
+    /// </summary>
+    /// <param name="id">The ID of the Submission summary to retrieve.</param>
+    /// <returns>The requested Submission.</returns>
+    /// <response code="200">Returns the requested Submission summary.</response>
+    /// <response code="404">If the Submission summary is not found.</response>
+    [HttpGet("{id}/summary")]
+    public async Task<ActionResult> GetSummary(int id, CancellationToken cancellationToken)
+    {
+        Submission? submission = await _service.GetSubmissionSummaryById(id, cancellationToken);
+        if(submission == null)
+        {
+            return NotFound(new { message = "Submission not found" });
+        }
+
+        return Ok(submission);
     }
 }
