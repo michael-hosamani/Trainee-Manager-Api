@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SubmissionProcessor.Worker")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8148d00c917ac5299f23a065ca8f5a7dbe0aa5c3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fee7bd9f7533d06119be936ef9fba683fc4ad3a6")]
 [assembly: System.Reflection.AssemblyProductAttribute("SubmissionProcessor.Worker")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SubmissionProcessor.Worker")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
