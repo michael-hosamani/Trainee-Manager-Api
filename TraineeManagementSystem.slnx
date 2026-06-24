@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/TraineeManagement.Api/">
+    <Project Path="TraineeManagement.Api/TraineeManagementApi.csproj" />
+  </Folder>
+  <Project Path="SubmissionProcessor.Worker/SubmissionProcessor.Worker.csproj" />
+</Solution>
