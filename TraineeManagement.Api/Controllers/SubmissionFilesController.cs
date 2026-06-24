@@ -1,10 +1,10 @@
 
 using Microsoft.AspNetCore.Mvc;
-using TraineeManagementApi.Dto;
-using TraineeManagementApi.Models;
-using TraineeManagementApi.Services;
+using TraineeManagement.Api.Dto;
+using TraineeManagement.Api.Models;
+using TraineeManagement.Api.Services;
 
-namespace TraineeManagementApi.Controllers;
+namespace TraineeManagement.Api.Controllers;
 
 [ApiController]
 [Route("api/submission-files")]

@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 
-namespace TraineeManagementApi.Services;
+namespace TraineeManagement.Api.Services;
 
 public class RedisCacheService: IRedisCacheService
 {

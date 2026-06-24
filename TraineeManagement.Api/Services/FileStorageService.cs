@@ -1,8 +1,8 @@
 
-using TraineeManagementApi.Dto;
-using TraineeManagementApi.Models;
+using TraineeManagement.Api.Dto;
+using TraineeManagement.Api.Models;
 
-namespace TraineeManagementApi.Services;
+namespace TraineeManagement.Api.Services;
 
 public class FileStorageService:IFileStorageService
 {

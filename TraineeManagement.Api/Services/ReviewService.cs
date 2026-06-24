@@ -2,11 +2,11 @@ using System.Data.Common;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using TraineeManagementApi.Models;
-using TraineeManagementApi.Dto;
-using TraineeManagementApi.Services;
+using TraineeManagement.Api.Models;
+using TraineeManagement.Api.Dto;
+using TraineeManagement.Api.Services;
 
-namespace TraineeManagementApi.Services;
+namespace TraineeManagement.Api.Services;
 
 public class ReviewService: IReviewService 
 {

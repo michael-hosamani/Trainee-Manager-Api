@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace TraineeManagementApi.Controllers;
+namespace TraineeManagement.Api.Controllers;
 
 [ApiController]
 [Route("api/health")]

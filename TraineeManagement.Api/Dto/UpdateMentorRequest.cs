@@ -1,7 +1,7 @@
-using TraineeManagementApi.Models;
+using TraineeManagement.Api.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace TraineeManagementApi.Dto;
+namespace TraineeManagement.Api.Dto;
 // Dto for validating inputs of update trainee request
 public class UpdateMentorRequest
 {

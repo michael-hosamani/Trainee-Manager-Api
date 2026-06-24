@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using TraineeManagementApi.Services;
+using TraineeManagement.Api.Services;
 using System.Text;
 using System.ComponentModel;
 using NSwag;
@@ -12,7 +12,7 @@ using NSwag.Generation.Processors.Security;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TraineeManagementApi.Models;
+using TraineeManagement.Api.Models;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Security.Claims;
 

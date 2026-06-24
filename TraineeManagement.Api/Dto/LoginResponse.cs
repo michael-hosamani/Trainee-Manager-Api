@@ -1,7 +1,7 @@
 using System.Text;
-using TraineeManagementApi.Models;
+using TraineeManagement.Api.Models;
 
-namespace TraineeManagementApi.Dto;
+namespace TraineeManagement.Api.Dto;
 
 public class LoginResponse
 {

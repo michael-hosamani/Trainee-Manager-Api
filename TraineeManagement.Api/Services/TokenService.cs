@@ -1,13 +1,13 @@
 using System.Text;
-using TraineeManagementApi.Models;
-using TraineeManagementApi.Dto;
+using TraineeManagement.Api.Models;
+using TraineeManagement.Api.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 
-namespace TraineeManagementApi.Services;
+namespace TraineeManagement.Api.Services;
 
 public class TokenService: ITokenService
 {

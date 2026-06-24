@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 
-namespace TraineeManagementApi.Models;
+namespace TraineeManagement.Api.Models;
 
 [Index(nameof(Username), IsUnique = true)]
 public class User

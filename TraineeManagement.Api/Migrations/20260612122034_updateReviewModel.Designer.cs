@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace TraineeManagementApi.Migrations
+namespace TraineeManagement.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20260612122034_updateReviewModel")]

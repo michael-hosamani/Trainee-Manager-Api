@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TraineeManagementApi.Models;
+using TraineeManagement.Api.Models;
 
 public class AppDbContext : DbContext
 {

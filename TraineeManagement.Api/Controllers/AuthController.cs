@@ -1,13 +1,13 @@
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TraineeManagementApi.Dto;
+using TraineeManagement.Api.Dto;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
-using TraineeManagementApi.Services;
+using TraineeManagement.Api.Services;
 
-namespace TraineeManagementApi.Controllers;
+namespace TraineeManagement.Api.Controllers;
 
 [ApiController]
 [Route("api/auth")]

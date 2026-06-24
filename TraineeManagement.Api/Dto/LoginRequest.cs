@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 
-namespace TraineeManagementApi.Dto;
+namespace TraineeManagement.Api.Dto;
 
 [Index(nameof(Username), IsUnique = true)]
 public class LoginRequest

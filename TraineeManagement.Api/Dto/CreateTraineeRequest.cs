@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using TraineeManagementApi.Models;
+using TraineeManagement.Api.Models;
 
-namespace TraineeManagementApi.Dto;
+namespace TraineeManagement.Api.Dto;
 
 // Dto for validating inputs of creation of trainee request
 public class CreateTraineeRequest

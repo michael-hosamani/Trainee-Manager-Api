@@ -1,6 +1,6 @@
-using TraineeManagementApi.Models;
+using TraineeManagement.Api.Models;
 
-namespace TraineeManagementApi.Services;
+namespace TraineeManagement.Api.Services;
 
 public interface IRabbitMQService
 {

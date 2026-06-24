@@ -1,4 +1,4 @@
-namespace TraineeManagementApi.Services;
+namespace TraineeManagement.Api.Services;
 
 public interface IRedisCacheService
 {

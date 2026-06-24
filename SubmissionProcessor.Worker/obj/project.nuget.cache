@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "mBvP188ekRs=",
+  "dgSpecHash": "coQCS4v+/UA=",
   "success": true,
   "projectFilePath": "/mnt/c/Assignments/TraineeManagementSystem/SubmissionProcessor.Worker/SubmissionProcessor.Worker.csproj",
   "expectedPackageFiles": [
@@ -35,15 +35,5 @@
     "/home/michael02/.nuget/packages/system.diagnostics.eventlog/10.0.9/system.diagnostics.eventlog.10.0.9.nupkg.sha512",
     "/home/michael02/.nuget/packages/system.threading.ratelimiting/8.0.0/system.threading.ratelimiting.8.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://zeuslearning-824100177805.d.codeartifact.ap-south-1.amazonaws.com/nuget/training-nuget-store/v3/index.json.",
-      "projectPath": "/mnt/c/Assignments/TraineeManagementSystem/SubmissionProcessor.Worker/SubmissionProcessor.Worker.csproj",
-      "warningLevel": 1,
-      "filePath": "/mnt/c/Assignments/TraineeManagementSystem/SubmissionProcessor.Worker/SubmissionProcessor.Worker.csproj",
-      "targetGraphs": []
-    }
-  ]
+  "logs": []
 }

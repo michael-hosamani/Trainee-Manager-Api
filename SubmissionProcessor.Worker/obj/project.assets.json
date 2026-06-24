@@ -636,6 +636,16 @@
         "build": {
           "buildTransitive/net6.0/_._": {}
         }
+      },
+      "Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Shared.dll": {}
+        }
       }
     }
   },
@@ -1588,12 +1598,18 @@
         "system.threading.ratelimiting.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "Shared/1.0.0": {
+      "type": "project",
+      "path": "../Shared/Shared.csproj",
+      "msbuildProject": "../Shared/Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
       "Microsoft.Extensions.Hosting >= 10.0.9",
-      "RabbitMQ.Client >= 7.2.1"
+      "RabbitMQ.Client >= 7.2.1",
+      "Shared >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -1621,7 +1637,11 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/mnt/c/Assignments/TraineeManagementSystem/Shared/Shared.csproj": {
+              "projectPath": "/mnt/c/Assignments/TraineeManagementSystem/Shared/Shared.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -1942,13 +1962,5 @@
         }
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://zeuslearning-824100177805.d.codeartifact.ap-south-1.amazonaws.com/nuget/training-nuget-store/v3/index.json."
-    }
-  ]
+  }
 }

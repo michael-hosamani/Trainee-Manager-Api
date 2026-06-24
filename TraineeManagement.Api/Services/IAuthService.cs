@@ -1,6 +1,6 @@
-using TraineeManagementApi.Dto;
+using TraineeManagement.Api.Dto;
 
-namespace TraineeManagementApi.Services;
+namespace TraineeManagement.Api.Services;
 
 public interface IAuthService
 {

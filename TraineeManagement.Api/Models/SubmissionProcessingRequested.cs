@@ -1,4 +1,4 @@
-namespace TraineeManagementApi.Models;
+namespace TraineeManagement.Api.Models;
 
 public class SubmissionProcessingRequested
 {

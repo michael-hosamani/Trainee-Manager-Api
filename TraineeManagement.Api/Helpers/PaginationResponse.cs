@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace TraineeManagementApi.Helpers
+namespace TraineeManagement.Api.Helpers
 {
     public class PagedResponse<T>
     {

@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using TraineeManagementApi.Helpers;
+using TraineeManagement.Api.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using TraineeManagementApi.Models;
-using TraineeManagementApi.Services;
-using TraineeManagementApi.Dto;
+using TraineeManagement.Api.Models;
+using TraineeManagement.Api.Services;
+using TraineeManagement.Api.Dto;
 
-namespace TraineeManagementApi.Controllers;
+namespace TraineeManagement.Api.Controllers;
 
 // [Authorize(Roles = $"{nameof(Role.Mentor)}, {nameof(Role.Trainee)}")]
 [ApiController]

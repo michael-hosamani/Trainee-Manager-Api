@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TraineeManagementApi.Dto;
+namespace TraineeManagement.Api.Dto;
 
 public class CreateSubmissionFileRequest
 {

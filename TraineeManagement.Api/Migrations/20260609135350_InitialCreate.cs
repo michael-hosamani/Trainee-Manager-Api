@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TraineeManagementApi.Migrations
+namespace TraineeManagement.Api.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

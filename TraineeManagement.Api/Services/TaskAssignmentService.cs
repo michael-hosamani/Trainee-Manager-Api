@@ -2,12 +2,12 @@ using System.Data.Common;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using TraineeManagementApi.Models;
-using TraineeManagementApi.Dto;
+using TraineeManagement.Api.Models;
+using TraineeManagement.Api.Dto;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 
-namespace TraineeManagementApi.Services;
+namespace TraineeManagement.Api.Services;
 
 public class TaskAssignmentService: ITaskAssignmentService 
 {

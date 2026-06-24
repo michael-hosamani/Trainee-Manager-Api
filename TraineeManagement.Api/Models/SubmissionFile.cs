@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace TraineeManagementApi.Models;
+namespace TraineeManagement.Api.Models;
 
 public class SubmissionFile
 {

@@ -1,4 +1,4 @@
-namespace TraineeManagementApi.Dto;
+namespace TraineeManagement.Api.Dto;
 
 public class DownloadFileType
 {

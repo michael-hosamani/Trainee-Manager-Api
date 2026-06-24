@@ -44,10 +44,10 @@ Once ran successfully, the API and the database are in sync. We can test the con
 
 ## Rabitmq setup
 1. Add RabbitMQ username
-  `dotnet user-secrets set "RabbitMQ:UserName" "admin"`
+  `dotnet user-secrets set "RabbitMQ:UserName" "Your_Username"`
 
 2. Add RabbitMQ password
-  `dotnet user-secrets set "RabbitMQ:Password" "rabbitmq_password"`
+  `dotnet user-secrets set "RabbitMQ:Password" "your_password"`
 
 
 ## Login credentials for testing

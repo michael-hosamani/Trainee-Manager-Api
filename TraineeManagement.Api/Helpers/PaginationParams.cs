@@ -1,4 +1,4 @@
-namespace TraineeManagementApi.Helpers;
+namespace TraineeManagement.Api.Helpers;
 
 public class PaginationParams
 {

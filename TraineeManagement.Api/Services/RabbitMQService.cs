@@ -2,9 +2,9 @@ using RabbitMQ.Client;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using TraineeManagementApi.Models;
+using TraineeManagement.Api.Models;
 
-namespace TraineeManagementApi.Services;
+namespace TraineeManagement.Api.Services;
 
 public class RabbitMQService: IRabbitMQService
 {
