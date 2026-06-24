@@ -1,7 +1,7 @@
-using SubmissionProcessor.Worker;
+// using SubmissionProcessor.Worker;
 
 var builder = Host.CreateApplicationBuilder(args);
-builder.Services.AddHostedService<Worker>();
+// builder.Services.AddHostedService<Worker>();
 
 var host = builder.Build();
 host.Run();
