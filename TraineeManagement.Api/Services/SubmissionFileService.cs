@@ -1,5 +1,6 @@
 using TraineeManagement.Api.Dto;
-using TraineeManagement.Api.Models;
+using Shared.Models;
+using Shared.Data;
 
 namespace TraineeManagement.Api.Services;
 

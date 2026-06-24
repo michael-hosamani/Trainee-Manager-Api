@@ -1,5 +1,5 @@
 // Trainee Response which excludes certain fields from the main Trainee Class
-using TraineeManagement.Api.Models;
+using Shared.Models;
 
 namespace TraineeManagement.Api.Dto;
 public class TraineeResponse

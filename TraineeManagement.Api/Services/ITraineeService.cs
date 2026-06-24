@@ -1,7 +1,7 @@
 // Interface for TraineeService
 using TraineeManagement.Api.Dto;
 using TraineeManagement.Api.Helpers;
-using TraineeManagement.Api.Models;
+using Shared.Models;
 
 namespace TraineeManagement.Api.Services;
 

@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using TraineeManagement.Api.Models;
+using Shared.Models;
 
 namespace TraineeManagement.Api.Dto;
  

@@ -2,7 +2,7 @@ using RabbitMQ.Client;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using TraineeManagement.Api.Models;
+using Shared.Models;
 
 namespace TraineeManagement.Api.Services;
 

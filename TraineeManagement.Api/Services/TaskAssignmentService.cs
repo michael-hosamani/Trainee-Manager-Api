@@ -2,10 +2,11 @@ using System.Data.Common;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using TraineeManagement.Api.Models;
+using Shared.Models;
 using TraineeManagement.Api.Dto;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Data;
 
 namespace TraineeManagement.Api.Services;
 

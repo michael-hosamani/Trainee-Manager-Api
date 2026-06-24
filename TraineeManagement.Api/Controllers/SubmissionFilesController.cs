@@ -1,7 +1,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using TraineeManagement.Api.Dto;
-using TraineeManagement.Api.Models;
+using Shared.Models;
 using TraineeManagement.Api.Services;
 
 namespace TraineeManagement.Api.Controllers;

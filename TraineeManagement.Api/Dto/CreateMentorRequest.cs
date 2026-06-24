@@ -1,4 +1,4 @@
-using TraineeManagement.Api.Models;
+using Shared.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace TraineeManagement.Api.Dto;

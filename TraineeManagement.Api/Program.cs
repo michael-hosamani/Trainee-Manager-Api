@@ -12,9 +12,10 @@ using NSwag.Generation.Processors.Security;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TraineeManagement.Api.Models;
+using Shared.Models;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Security.Claims;
+using Shared.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

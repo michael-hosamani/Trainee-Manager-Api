@@ -1,5 +1,5 @@
 using System.Text;
-using TraineeManagement.Api.Models;
+using Shared.Models;
 using TraineeManagement.Api.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
