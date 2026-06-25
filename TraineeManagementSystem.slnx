@@ -3,4 +3,5 @@
     <Project Path="TraineeManagement.Api/TraineeManagementApi.csproj" />
   </Folder>
   <Project Path="SubmissionProcessor.Worker/SubmissionProcessor.Worker.csproj" />
+  <Project Path="TraineeDirectory.Api/TraineeDirectory.Api.csproj" />
 </Solution>
