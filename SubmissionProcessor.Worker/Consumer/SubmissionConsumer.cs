@@ -38,41 +38,45 @@ public class SubmissionConsumer : BackgroundService
         _connection = await factory.CreateConnectionAsync();
         _channel = await _connection.CreateChannelAsync();
 
-        string queueName = _configuration["QueueName"];
+        string queueName = _configuration["RabbitMQ:QueueName"];
         var dlx = $"{queueName}-dlx";
         var dlq = $"{queueName}-dlq";
 
-        // await _channel.ExchangeDeclareAsync(
-        //     exchange: dlx,
-        //     type: ExchangeType.Direct,
-        //     durable: true,
-        //     autoDelete: false, 
-        //     cancellationToken: cancellationToken
-        // );
+        await _channel.ExchangeDeclareAsync(
+            exchange: dlx,
+            type: ExchangeType.Direct,
+            durable: true,
+            autoDelete: false, 
+            cancellationToken: cancellationToken
+        );
 
-        // await _channel.QueueDeclareAsync(
-        //     queue: dlq,
-        //     durable: true,
-        //     exclusive: false,
-        //     autoDelete: false,
-        //     arguments: null,
-        //     cancellationToken: cancellationToken
-        // );
+        await _channel.QueueDeclareAsync(
+            queue: dlq,
+            durable: true,
+            exclusive: false,
+            autoDelete: false,
+            arguments: null,
+            cancellationToken: cancellationToken
+        );
 
-        // await _channel.QueueBindAsync(
-        //     queue: dlq,
-        //     exchange: dlx,
-        //     routingKey: dlq,
-        //     arguments: null,
-        //     cancellationToken: cancellationToken
-        // );
+        await _channel.QueueBindAsync(
+            queue: dlq,
+            exchange: dlx,
+            routingKey: dlq,
+            arguments: null,
+            cancellationToken: cancellationToken
+        );
 
         await _channel.QueueDeclareAsync(
             queue: queueName,
             durable: true,
             exclusive: false,
             autoDelete: false,
-            arguments: null,
+            arguments: new Dictionary<string, object?>
+            {
+                { "x-dead-letter-exchange", dlx },
+                { "x-dead-letter-routing-key", dlq } 
+            },
             cancellationToken: cancellationToken
         );
 
@@ -97,7 +101,7 @@ public class SubmissionConsumer : BackgroundService
 
                 if(res == null)
                 {
-                    _channel.BasicNackAsync(ea.DeliveryTag, false, true);
+                    await _channel.BasicNackAsync(ea.DeliveryTag, false, true);
                     return;
                 }
 
@@ -105,11 +109,16 @@ public class SubmissionConsumer : BackgroundService
                 AppDbContext db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 
                 ProcessingJob? job = await db.ProcessingJobs.SingleOrDefaultAsync(p => p.CorrelationId == res.CorrelationId);
-
+                if(job == null)
+                {
+                    await _channel.BasicAckAsync(ea.DeliveryTag, multiple: false);
+                    _logger.LogWarning("Processing Job not found with Id : {id}", res.CorrelationId);
+                    return;
+                }
                 // return if job already completed
                 if(job.status == ProcessingJobStatus.Completed)
                 {
-                    _channel.BasicAckAsync(ea.DeliveryTag, multiple: false);
+                    await _channel.BasicAckAsync(ea.DeliveryTag, multiple: false);
                     _logger.LogWarning("Job Already Processed: {id}", job.Id);
                     return;
                 }
