@@ -11,13 +11,11 @@ public class SubmissionConsumer : BackgroundService
     private IConnection? _connection;
     private IChannel? _channel;
     private readonly IConfiguration _configuration;
-    private readonly AppDbContext _db;
     private readonly IServiceScopeFactory _serviceScopeFactory;
 
-    public SubmissionConsumer(IConfiguration configuration, AppDbContext db, IServiceScopeFactory serviceScopeFactory)
+    public SubmissionConsumer(IConfiguration configuration, IServiceScopeFactory serviceScopeFactory)
     {
         _configuration = configuration;
-        _db = db;
         _serviceScopeFactory = serviceScopeFactory;
     }
 
@@ -55,30 +53,38 @@ public class SubmissionConsumer : BackgroundService
         
         consumer.ReceivedAsync += async (ch, ea) =>
         {
-            var body = ea.Body.ToArray();
-           
-            var message = Encoding.UTF8.GetString(body);
-            var res = JsonSerializer.Deserialize<SubmissionProcessingRequested>(message);
-
-            if(res == null)
+            SubmissionProcessingRequested? res = null;
+            try
             {
-                _channel.BasicNackAsync(ea.DeliveryTag, false, true);
-                // return Task.CompletedTask;
+               var body = ea.Body.ToArray();
+            
+                var message = Encoding.UTF8.GetString(body);
+                res = JsonSerializer.Deserialize<SubmissionProcessingRequested>(message);
+
+                if(res == null)
+                {
+                    _channel.BasicNackAsync(ea.DeliveryTag, false, true);
+                    return;
+                    // return Task.CompletedTask;
+                }
+
+                this.UpdateStatus(res, ProcessingJobStatus.Processing);
+
+                //TODO: simulate job processing 
+
+                // Acknowledge message
+                await _channel.BasicAckAsync(ea.DeliveryTag, multiple: false);
+
+                this.UpdateStatus(res, ProcessingJobStatus.Completed); 
             }
-
-            // ProcessingJob job = await _db.ProcessingJobs.FindAsync(res.CorrelationId);
-            // job.status = ProcessingJobStatus.Processing;
-            // await _db.SaveChangesAsync();
-            this.UpdateStatus(res, ProcessingJobStatus.Processing);
-
-            //TODO: simulate job processing 
-
-            // Acknowledge message
-            await _channel.BasicAckAsync(ea.DeliveryTag, multiple: false);
-
-            // job.status = ProcessingJobStatus.Completed;
-            // await _db.SaveChangesAsync();
-            this.UpdateStatus(res, ProcessingJobStatus.Completed);
+            catch(Exception ex)
+            {
+                if(res != null)
+                {
+                    UpdateStatus(res, ProcessingJobStatus.Failed, ex.Message);
+                }
+            }
+            
         };
         await _channel.BasicConsumeAsync(
             queue: _configuration["RabbitMQ:QueueName"],
@@ -86,8 +92,6 @@ public class SubmissionConsumer : BackgroundService
             consumer: consumer,
             cancellationToken: cancellationToken
         );
-
-        // return;
     }
 
     public async Task UpdateStatus(SubmissionProcessingRequested payload, ProcessingJobStatus status, string ErrorMessage = "default", CancellationToken cancellationToken = default)

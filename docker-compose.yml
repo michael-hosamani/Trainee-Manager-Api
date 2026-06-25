@@ -1,7 +1,7 @@
 services:
   redis:
     image: docker-registry-002.zeuslearning.com/zeuslearning/redis
-    container_name: redis
+    container_name: redis-image
     ports:
       - "6379:6379"
     command: redis-server --requirepass redispass --appendonly yes
@@ -9,7 +9,7 @@ services:
       - redis-data:/data
   mysql:
     image: docker-registry-002.zeuslearning.com/zeuslearning/mysql
-    container_name: mysql
+    container_name: mysql-image
     ports:
       - "3307:3306"
     environment:
@@ -19,7 +19,7 @@ services:
       - mysql-data:/var/lib/mysql
   rabbitmq:
     image: docker-registry-002.zeuslearning.com/zeuslearning/rabbitmq:3.13.7-management
-    container_name: rabbitmq
+    container_name: rabbitmq-image
     ports:
       - "5672:5672"
       - "15672:15672"

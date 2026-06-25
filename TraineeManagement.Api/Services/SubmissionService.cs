@@ -45,7 +45,7 @@ public class SubmissionService: ISubmissionService
                                 .SingleOrDefaultAsync(t => t.Id == id);
         if(result == null)
         {
-            _logger.LogWarning("Submissoin not found with {id}", id);
+            _logger.LogWarning("Submission not found with {id}", id);
             return null;
         }
         return result;
@@ -123,6 +123,16 @@ public class SubmissionService: ISubmissionService
             RequestedAt = DateTime.Now,
             ContractVersion = "1.0.0"
         };
+        ProcessingJob processingJob = new ()
+        {
+            status = ProcessingJobStatus.Queued,
+            Attempts = 1,
+            ErrorSummary = "",
+            StartedAt = DateTime.Now,
+            CorrelationId = submissionProcessingRequested.CorrelationId  
+        };
+        await _db.ProcessingJobs.AddAsync(processingJob);
+        await _db.SaveChangesAsync();
         await _rabbitMQService.PublishAsync(submissionProcessingRequested);
         
         _logger.LogInformation("Submission file created successfully");
@@ -145,7 +155,7 @@ public class SubmissionService: ISubmissionService
                                 .SingleOrDefaultAsync(t => t.Id == id);
         if(result == null)
         {
-            _logger.LogWarning("Submissoin not found with {id}", id);
+            _logger.LogWarning("Submissionn not found with {id}", id);
             return null;
         }
 
