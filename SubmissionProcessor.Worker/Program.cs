@@ -10,5 +10,11 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options =>
    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
+// Registration
+builder.Services.AddHttpClient("TraineeDirectory.Api", client =>
+   {
+   client.BaseAddress = new Uri("https://localhost:5190/");
+   });
+
 var host = builder.Build();
 host.Run();

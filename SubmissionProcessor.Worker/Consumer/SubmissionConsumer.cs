@@ -5,6 +5,7 @@ using Shared.Models;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using System.Net.Http.Json;
 using System.Security.Authentication;
 
 namespace SubmissionProcessor.Worker.Consumer;
@@ -15,13 +16,15 @@ public class SubmissionConsumer : BackgroundService
     private readonly IConfiguration _configuration;
     private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly ILogger<SubmissionConsumer> _logger;
+    private readonly HttpClient _clientFactory;
     private readonly int maxRetries = 3;
 
-    public SubmissionConsumer(IConfiguration configuration, IServiceScopeFactory serviceScopeFactory, ILogger<SubmissionConsumer> logger)
+    public SubmissionConsumer(IConfiguration configuration, IServiceScopeFactory serviceScopeFactory, ILogger<SubmissionConsumer> logger, HttpClient clientFactory)
     {
         _configuration = configuration;
         _serviceScopeFactory = serviceScopeFactory;
         _logger = logger;
+        _clientFactory = clientFactory;
     }
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -126,13 +129,17 @@ public class SubmissionConsumer : BackgroundService
                 UpdateStatus(res, ProcessingJobStatus.Processing);
                 Console.WriteLine("Started processing");
 
-                //TODO: simulate job processing 
+                //simulate job processing 
                 SubmissionFile? file = await db.SubmissionFiles.FindAsync(res.FileId);
                 if (file == null)
                 {
                     throw new Exception("File not found");
                 }
                 Console.WriteLine("Checksum: " + file.Checksum);
+
+                var response = await _clientFactory.GetFromJsonAsync("api/trainees", new JsonSerializerOptions(JsonSerializerDefaults.Web));
+
+                Console.WriteLine("res: " + response);
 
                 await Task.Delay(TimeSpan.FromSeconds(3));
 
