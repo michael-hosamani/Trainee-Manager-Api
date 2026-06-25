@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using System.Net.Http.Json;
 using System.Security.Authentication;
+using SubmissionProcessor.Worker.Services;
 
 namespace SubmissionProcessor.Worker.Consumer;
 public class SubmissionConsumer : BackgroundService
@@ -16,15 +17,15 @@ public class SubmissionConsumer : BackgroundService
     private readonly IConfiguration _configuration;
     private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly ILogger<SubmissionConsumer> _logger;
-    private readonly HttpClient _httpClient;
+    private readonly TraineeDirectoryClient _client;
     private readonly int maxRetries = 3;
 
-    public SubmissionConsumer(IConfiguration configuration, IServiceScopeFactory serviceScopeFactory, ILogger<SubmissionConsumer> logger, HttpClient httpClient)
+    public SubmissionConsumer(IConfiguration configuration, IServiceScopeFactory serviceScopeFactory, ILogger<SubmissionConsumer> logger, TraineeDirectoryClient client)
     {
         _configuration = configuration;
         _serviceScopeFactory = serviceScopeFactory;
         _logger = logger;
-        _httpClient = httpClient;
+        _client = client;
     }
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -143,9 +144,10 @@ public class SubmissionConsumer : BackgroundService
                 }
                 Console.WriteLine("Checksum: " + file.Checksum);
 
-                DummyTrainee response = await _httpClient.GetFromJsonAsync<DummyTrainee>("api/trainees", new JsonSerializerOptions(JsonSerializerDefaults.Web));
+                DummyTrainee? response = await _client.GetTraineeAsync(cancellationToken);
 
-                Console.WriteLine("response: " + response.ToString());
+                Console.WriteLine("response: " + response?.Name);
+                Console.WriteLine("mentor: " + response?.Mentor);
 
                 await Task.Delay(TimeSpan.FromSeconds(3));
 
