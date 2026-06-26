@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Net.Http.Json;
 using System.Security.Authentication;
 using SubmissionProcessor.Worker.Services;
+using Shared.Dto;
 
 namespace SubmissionProcessor.Worker.Consumer;
 public class SubmissionConsumer : BackgroundService
@@ -142,12 +143,11 @@ public class SubmissionConsumer : BackgroundService
                 {
                     throw new Exception("File not found");
                 }
-                Console.WriteLine("Checksum: " + file.Checksum);
+                _logger.LogInformation("Checksum from the file: {checksum}", file.Checksum);
 
-                DummyTrainee? response = await _client.GetTraineeAsync(cancellationToken);
+                TestResponseDto? response = await _client.GetTraineeByIdASync(res.CorrelationId, cancellationToken);
 
-                Console.WriteLine("response: " + response?.Name);
-                Console.WriteLine("mentor: " + response?.Mentor);
+                _logger.LogInformation("CorrelationId for internal http server's response: {id}", response.CorrelationId);
 
                 await Task.Delay(TimeSpan.FromSeconds(3));
 
@@ -158,7 +158,7 @@ public class SubmissionConsumer : BackgroundService
             }
             catch(Exception ex)
             {
-                Console.WriteLine("in catch block");
+                Console.WriteLine("in catch block" + ex.Message);
                 using var scope = _serviceScopeFactory.CreateScope();
                 AppDbContext db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 

@@ -18,9 +18,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Registration
 builder.Services.AddHttpClient<TraineeDirectoryClient>("TraineeDirectory.Api", client =>
-   {
-   client.BaseAddress = new Uri("http://localhost:5190/");
-   }).ConfigurePrimaryHttpMessageHandler(() =>
+    {
+        client.BaseAddress = new Uri("http://localhost:5190/");
+    }).ConfigurePrimaryHttpMessageHandler(() =>
     {
         return new SocketsHttpHandler()
         {
@@ -29,28 +29,28 @@ builder.Services.AddHttpClient<TraineeDirectoryClient>("TraineeDirectory.Api", c
     })
     .SetHandlerLifetime(Timeout.InfiniteTimeSpan)
     .AddStandardResilienceHandler(options =>
-{
- 
-    options.Retry.MaxRetryAttempts = 5;
-    options.Retry.BackoffType = DelayBackoffType.Exponential;
-    options.Retry.UseJitter = true;
- 
-    options.Retry.ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
-        .Handle<HttpRequestException>()
-        .HandleResult(response =>
-        response.StatusCode == HttpStatusCode.RequestTimeout ||
-        response.StatusCode == HttpStatusCode.ServiceUnavailable ||
-        response.StatusCode == HttpStatusCode.TooManyRequests ||
-        (int)response.StatusCode >= 500
-        );
- 
-    options.CircuitBreaker.FailureRatio = 0.5;
-    options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(20);
-    options.CircuitBreaker.MinimumThroughput = 5;
-    options.CircuitBreaker.BreakDuration = TimeSpan.FromSeconds(30);
- 
-    options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(10);
-});
+    {
+    
+        options.Retry.MaxRetryAttempts = 5;
+        options.Retry.BackoffType = DelayBackoffType.Exponential;
+        options.Retry.UseJitter = true;
+    
+        options.Retry.ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
+            .Handle<HttpRequestException>()
+            .HandleResult(response =>
+            response.StatusCode == HttpStatusCode.RequestTimeout ||
+            response.StatusCode == HttpStatusCode.ServiceUnavailable ||
+            response.StatusCode == HttpStatusCode.TooManyRequests ||
+            (int)response.StatusCode >= 500
+            );
+    
+        options.CircuitBreaker.FailureRatio = 0.5;
+        options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(20);
+        options.CircuitBreaker.MinimumThroughput = 5;
+        options.CircuitBreaker.BreakDuration = TimeSpan.FromSeconds(30);
+    
+        options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(10);
+    });
 
 var host = builder.Build();
 host.Run();

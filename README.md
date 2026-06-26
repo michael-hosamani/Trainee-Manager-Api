@@ -1,8 +1,8 @@
 ## Project Name 
-Trainee Management API
+Trainee Management System
 
 ## Technology Used
-Asp.net core and MySql
+Asp.net core, MySql, Redis, RabbitMQ & Docker
 
 ## Backend setup stpes
 1. Navigate to the project folder

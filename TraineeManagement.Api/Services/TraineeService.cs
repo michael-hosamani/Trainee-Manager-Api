@@ -42,7 +42,7 @@ public class TraineeService(ILogger<TraineeService> logger, AppDbContext db, IRe
             return null;
         }
 
-        _redisCacheService.SetAsync(key, result, TimeSpan.FromMinutes(30), cancellationToken);
+        await _redisCacheService.SetAsync(key, result, TimeSpan.FromMinutes(30), cancellationToken);
 
         return result;
     }
@@ -108,7 +108,7 @@ public class TraineeService(ILogger<TraineeService> logger, AppDbContext db, IRe
         findTrainee.UpdatedDate = DateTime.Now;
 
         await _db.SaveChangesAsync();
-        _redisCacheService.RemoveAsync($"trainee:{id}", cancellationToken);
+        await _redisCacheService.RemoveAsync($"trainee:{id}", cancellationToken);
         // _redisCacheService.SetAsync($"trainee:{id}", findTrainee, TimeSpan.FromMinutes(30), cancellationToken);
 
         _logger.LogInformation("Trainee updated successfully");
@@ -129,7 +129,7 @@ public class TraineeService(ILogger<TraineeService> logger, AppDbContext db, IRe
         _db.Trainees.Remove(trainee);
         await _db.SaveChangesAsync();
 
-        _redisCacheService.RemoveAsync($"trainee:{id}", cancellationToken);
+        await _redisCacheService.RemoveAsync($"trainee:{id}", cancellationToken);
 
         _logger.LogInformation("Trainee deleted successfully");
 

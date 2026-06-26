@@ -16,6 +16,11 @@ using Shared.Models;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Security.Claims;
 using Shared.Data;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using RabbitMQ.Client;
+using System.Text.Json;
+using Microsoft.AspNetCore.Connections;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -105,6 +110,40 @@ builder.Services
         };
     });
 
+builder.Services.AddHealthChecks()
+   .AddMySql(
+      connectionString: builder.Configuration.GetConnectionString("DefaultConnection"),
+      name: "mysql",
+      timeout: TimeSpan.FromSeconds(5))
+   .AddRedis(
+      redisConnectionString: builder.Configuration.GetConnectionString("Redis"),
+      name: "redis",
+      timeout: TimeSpan.FromSeconds(5))
+   .AddRabbitMQ(
+        async sp =>
+        {
+            var factory = new ConnectionFactory
+            {
+               HostName = "localhost",
+               UserName = "admin",
+               Password = "rabbitmq_password",
+               Port = 5672,
+               VirtualHost = "/"
+            };
+            return await factory.CreateConnectionAsync();
+        },
+        name: "rabbitmq",
+        failureStatus: HealthStatus.Unhealthy,
+        tags: new[] { "mq", "rabbit" }
+    )
+    .AddUrlGroup(
+        uri: new Uri("http://localhost:5190/api/trainees"), // URL to check
+        name: "TraineeDirectory.Api",
+        failureStatus: HealthStatus.Unhealthy,
+        timeout: TimeSpan.FromSeconds(5)
+    );
+   
+
 builder.Services.AddAuthorization();
 
 builder.Logging.AddConsole();     
@@ -140,6 +179,28 @@ using(var scope = app.Services.CreateAsyncScope())
 }
 
 app.UseCors("AllowSpecificOrigin");
+
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+   Predicate = _ => true, // Include all health checks
+   ResponseWriter = async (context, report) =>
+   {
+      context.Response.ContentType = "application/json";
+
+      var result = new
+      {
+         status = report.Status.ToString(),
+         checks = report.Entries.Select(e => new {
+               name = e.Key,
+               status = e.Value.Status.ToString(),
+               description = e.Value.Description
+         })
+      };
+
+      await context.Response.WriteAsJsonAsync(result);
+   }
+});
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
