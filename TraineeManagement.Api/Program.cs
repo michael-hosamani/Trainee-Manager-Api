@@ -120,8 +120,8 @@ builder.Services.AddHealthChecks()
       name: "redis",
       timeout: TimeSpan.FromSeconds(5))
    .AddRabbitMQ(
-        async sp =>
-        {
+      async sp =>
+      {
             var factory = new ConnectionFactory
             {
                HostName = "localhost",
@@ -131,10 +131,11 @@ builder.Services.AddHealthChecks()
                VirtualHost = "/"
             };
             return await factory.CreateConnectionAsync();
-        },
-        name: "rabbitmq",
-        failureStatus: HealthStatus.Unhealthy,
-        tags: new[] { "mq", "rabbit" }
+      },
+      name: "rabbitmq",
+      failureStatus: HealthStatus.Unhealthy,
+      timeout: TimeSpan.FromSeconds(5),
+      tags: new[] { "mq", "rabbit" }
     )
     .AddUrlGroup(
         uri: new Uri("http://localhost:5190/api/trainees"), // URL to check
@@ -199,6 +200,11 @@ app.MapHealthChecks("/health/ready", new HealthCheckOptions
 
       await context.Response.WriteAsJsonAsync(result);
    }
+});
+
+app.MapHealthChecks("/health/live", new HealthCheckOptions
+{
+   Predicate = _ => true
 });
 
 app.UseAuthentication();
