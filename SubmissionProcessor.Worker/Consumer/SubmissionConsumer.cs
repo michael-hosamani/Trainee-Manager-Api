@@ -135,12 +135,12 @@ public class SubmissionConsumer : BackgroundService
                     return;
                 }
 
-                UpdateStatus(res, ProcessingJobStatus.Processing);
-                _logger.LogInformation("Started processing job with Id: {id}", id);
+                await UpdateStatus(res, ProcessingJobStatus.Processing);
+                _logger.LogInformation("Started processing job with Id: {id}", job.Id);
 
                 //simulate job processing 
                 SubmissionFile? file = await db.SubmissionFiles.FindAsync(res.FileId);
-                if(!file)
+                if(file == null)
                 {
                     _logger.LogWarning("File not found with Id: {id}", res.FileId);
                     throw new Exception("File not found");
@@ -203,7 +203,7 @@ public class SubmissionConsumer : BackgroundService
 
         if(job == null)
         {
-            _logger.LogWarning("Job not found with Id: ", correlationId);
+            _logger.LogWarning("Job not found with Id: {id}", correlationId);
             return;
         }
 
