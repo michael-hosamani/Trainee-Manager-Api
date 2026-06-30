@@ -12,77 +12,79 @@ Asp.net core, MySql, Redis, RabbitMQ & Docker
   ### TraineeManagement.Api
   1. Navigate to the TraineeManagement.Api folder  
     From the root of the project run:  
-    ``` javascript
-      cd TraineeManagement.Api
-    ```
+      ```javascript
+        cd TraineeManagement.Api
+      ```
 
   2. Set up .env files  
     Run the following command and enter appropriate values for all the environment variables  
-    ``` javascript
-      cp .env.example .env 
-    ```
+      ```javascript
+        cp .env.example .env 
+      ```
 
   3. Restore dependencies  
-    ``` javascript
-      dotnet restore`
-    `` 
+      ```javascript
+        dotnet restore
+      ``` 
 
   4. Build the project   
-    ``` javascript
-      dotnet build
-    ```
+      ```javascript
+        dotnet build
+      ```
 
   6. Run the application  
-    ``` javascript
-      dotnet run
-    ```
+      ```javascript
+        dotnet run
+      ```
 
-  ### SubmissionProcesso.Worker
-  1. Navigate to the SubmissionProcesso.Worker folder    
+  ### SubmissionProcessor.Worker
+  1. Navigate to the SubmissionProcessor.Worker folder    
     From the root of the project run:   
-    ``` javascript 
-      cd SubmissionProcesso.Worker
-    ```
+      ```javascript 
+        cd SubmissionProcessor.Worker
+      ```
 
   2. Set up .env files    
     Run the following command and enter appropriate values for all the environment variables  
-    ``` javascript 
-      cp .env.example .env 
-    ```
+      ```javascript 
+        cp .env.example .env 
+      ```
 
   3. Restore dependencies  
-    ``` javascript 
-      dotnet restore`
-    `` 
+      ```javascript 
+        dotnet restore
+      ```
 
   4. Build the project   
-    ``` javascript 
-      dotnet build
-    ```
+      ```javascript 
+        dotnet build
+      ```
 
   5. Run database migrations  
-    ``` javascript 
-      dotnet ef database update
-    ```
+      ```javascript 
+        dotnet ef database update
+      ```
 
   6. Run the application  
-    ``` javascript 
-      dotnet run
-    ```
+      ```javascript 
+        dotnet run
+      ```
 
 ## MySQL setup steps
 1. Get a database connection string
 
 2. Add Database connection string in the .env file of TraineeManagement.Api and SubmissionProcessor.Worker  
-  ``` javascript 
+  ```javascript 
     ConnectionStrings__DefaultConnection=Your-Database-Connection-String
   ```
 
 3. Run the following command in the root of the project dir to make sure there are no errors.  
-  ``` javascript dotnet build ```
+  ```javascript 
+    dotnet build 
+  ```
 
 4. Run the following command in the root of the project dir to create tables in the database   
-  ``` javascript 
+  ```javascript 
     dotnet ef database update -p Shared -s TraineeManagement.Api
   ```
 
