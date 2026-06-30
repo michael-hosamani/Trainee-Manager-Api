@@ -58,13 +58,13 @@ public class MentorsController: ControllerBase
     /// </summary>
     /// <param name="mentor">Mentor details required for creation</param>
     /// <returns>The newly created Mentor.</returns>
-    /// <response code="200">Returns the newly created Mentor.</response>
+    /// <response code="201">Returns the newly created Mentor.</response>
     [HttpPost]
     public async Task<ActionResult> CreateMentor(CreateMentorRequest mentor)
     {
-        MentorResponse MentorResponse = await _service.CreateMentor(mentor);
+        MentorResponse mentorResponse = await _service.CreateMentor(mentor);
 
-        return Ok(MentorResponse);
+        return CreatedAtAction(nameof(GetMentorById), new { id = mentorResponse.Id }, mentorResponse);
     }
 
     // PUT /api/mentors/{id}

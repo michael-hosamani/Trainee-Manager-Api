@@ -58,13 +58,13 @@ public class LearningTaskController: ControllerBase
     /// </summary>
     /// <param name="learningTask">LearningTask details required for creation</param>
     /// <returns>The newly created LearningTask.</returns>
-    /// <response code="200">Returns the newly created LearningTask.</response>
+    /// <response code="201">Returns the newly created LearningTask.</response>
     [HttpPost]
     public async Task<ActionResult> CreateLearningTask(CreateLearningTaskRequest learningTask)
     {
         LearningTaskResponse learningTaskResponse = await _service.CreateLearningTask(learningTask);
 
-        return Ok(learningTaskResponse);
+        return CreatedAtAction(nameof(GetLearningTaskById), new { id = learningTaskResponse.Id }, learningTaskResponse);
     }
 
     // PUT /api/learning-tasks/{id}

@@ -7,6 +7,7 @@ namespace TraineeManagement.Api.Dto;
 
 public class TaskAssignmentResponse
 {
+    public int Id { get; set; }
     public required int TraineeId { get; set; }
     public required int MentorId { get; set; }
     public required int LearningTaskId { get; set; }

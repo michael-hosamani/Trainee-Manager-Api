@@ -58,13 +58,13 @@ public class SubmissionsController: ControllerBase
     /// </summary>
     /// <param name="submission">Submission details required for creation</param>
     /// <returns>The newly created Submission.</returns>
-    /// <response code="200">Returns the newly created Submission.</response>
+    /// <response code="201">Returns the newly created Submission.</response>
     [HttpPost]
     public async Task<ActionResult> CreateSubmission(CreateSubmissionRequest submission)
     {
         SubmissionResponse submissionResponse = await _service.CreateSubmission(submission);
-
-        return Ok(submissionResponse);
+        
+        return CreatedAtAction(nameof(GetSubmissionById), new { id = submissionResponse.Id }, submissionResponse);
     }
 
     // POST /api/submissions/{submissionId}/files
@@ -78,7 +78,7 @@ public class SubmissionsController: ControllerBase
     public async Task<ActionResult> UploadFile(int submissionId, CreateSubmissionFileRequest createSubmissionFileRequest, CancellationToken cancellationToken)
     {
         string res = await _service.UploadFile(submissionId, createSubmissionFileRequest, cancellationToken);
-        return Ok(res);
+        return Accepted();
     }
 
     // GET /api/submissions/{id}/summary

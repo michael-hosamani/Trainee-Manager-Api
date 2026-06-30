@@ -58,13 +58,13 @@ public class TraineesController: ControllerBase
     /// </summary>
     /// <param name="trainee">Trainee details required for creation</param>
     /// <returns>The newly created Trainee.</returns>
-    /// <response code="200">Returns the newly created Trainee.</response>
+    /// <response code="201">Returns the newly created Trainee.</response>
     [HttpPost]
     public async Task<ActionResult> CreateTrainee(CreateTraineeRequest trainee)
     {
         TraineeResponse traineeResponse = await service.CreateTrainee(trainee);
 
-        return Ok(traineeResponse);
+        return CreatedAtAction(nameof(GetTraineeById), new { id = traineeResponse.Id }, traineeResponse);
     }
 
     // PUT /api/trainees/{id}

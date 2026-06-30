@@ -58,13 +58,13 @@ public class TaskAssignmentController: ControllerBase
     /// </summary>
     /// <param name="taskAssignment">TaskAssignments details required for creation</param>
     /// <returns>The newly created TaskAssignments.</returns>
-    /// <response code="200">Returns the newly created TaskAssignments.</response>
+    /// <response code="201">Returns the newly created TaskAssignments.</response>
     [HttpPost]
     public async Task<ActionResult> CreateTaskAssignment(CreateTaskAssignmentRequest taskAssignment)
     {
         TaskAssignmentResponse taskAssignmentResponse = await _service.CreateTaskAssignment(taskAssignment);
 
-        return Ok(taskAssignmentResponse);
+        return CreatedAtAction(nameof(GetTaskAssignmentById), new { id = taskAssignmentResponse.Id }, taskAssignmentResponse);
     }
 
     // PUT /api/task-assignments/{id}

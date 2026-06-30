@@ -58,12 +58,12 @@ public class ReviewsController: ControllerBase
     /// </summary>
     /// <param name="review">Review details required for creation</param>
     /// <returns>The newly created Review.</returns>
-    /// <response code="200">Returns the newly created Review.</response>
+    /// <response code="201">Returns the newly created Review.</response>
     [HttpPost]
     public async Task<ActionResult> CreateReview(CreateReviewRequest review)
     {
         ReviewResponse reviewResponse = await _service.CreateReview(review);
 
-        return Ok(reviewResponse);
+        return CreatedAtAction(nameof(GetReviewById), new { id = reviewResponse.Id }, reviewResponse);
     }
 }
