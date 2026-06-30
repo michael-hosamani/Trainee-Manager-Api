@@ -5,7 +5,7 @@ Trainee Management System
 Asp.net core, MySql, Redis, RabbitMQ & Docker
 
 ## Workflow Diagram
-
+<img width="1002" height="645" alt="Screenshot 2026-06-29 192131" src="https://github.com/user-attachments/assets/93e9fed9-8086-44ff-a616-52fc8ec07f8d" />
 
 ## Backend setup stpes
 1. Navigate to the project folder
